@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login/Sign Up - COSY Air Conditioners</title>
+  <!-- Bootstrap 5.2 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome for icons -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="main.css">
+  <script src="auth-utils.js"></script>
+  <style>
+    :root {
+      --primary-color: #20b2aa;
+      --primary-dark: #1c9890;
+      --gradient-primary: linear-gradient(135deg, #20b2aa, #2563eb);
+      --gradient-hero: linear-gradient(135deg, #1793c8, #0db7a3 60%, #3b82f6 100%);
+    }
+
+   
+    /* Hero Section */
+    .auth-hero {
+      background: var(--gradient-hero);
+      color: white;
+      padding: 100px 0 100px;
+      /* margin-top: 100px; */
+      text-align: center;
+    }
+
+    .auth-hero h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .auth-hero p {
+      font-size: 1.2rem;
+      opacity: 0.9;
+    }
+
+    /* Auth Container */
+    .auth-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 3rem 1rem;
+    }
+
+    .auth-card {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      overflow: hidden;
+      margin-bottom: 3rem;
+    }
+
+    .auth-tabs {
+      background: #f8f9fa;
+      border-bottom: 1px solid #e9ecef;
+    }
+
+    .auth-tabs  {
+      background: none;
+      border: none;
+      color: #6c757d;
+      padding: 1.2rem 2rem;
+      font-weight: 600;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+    }
+
+    .auth-tabs.active {
+      color: var(--primary-color);
+      border-bottom: 3px solid var(--primary-color);
+      background: white;
+    }
+
+    .auth-tabs:hover:not(.active) {
+      color: var(--primary-dark);
+      background: rgba(32, 178, 170, 0.05);
+    }
+
+    .auth-content {
+      padding: 3rem;
+    }
+
+    /* Form Styles */
+    .auth-form .form-control {
+      padding: 1rem 1.2rem;
+      border: 2px solid #e9ecef;
+      border-radius: 10px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      margin-bottom: 1.5rem;
+    }
+
+    .auth-form .form-control:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 0.2rem rgba(32, 178, 170, 0.25);
+    }
+
+    .form-label {
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 0.5rem;
+    }
+
+    .btn-primary {
+      background: var(--gradient-primary);
+      border: none;
+      padding: 1rem 2rem;
+      font-weight: 600;
+      font-size: 1.1rem;
+      border-radius: 10px;
+      transition: all 0.3s ease;
+      width: 100%;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(32, 178, 170, 0.4);
+    }
+
+    /* Social Login */
+    .divider {
+      display: flex;
+      align-items: center;
+      margin: 2rem 0;
+      color: #6c757d;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: "";
+      flex: 1;
+      border-bottom: 1px solid #dee2e6;
+    }
+
+    .divider span {
+      padding: 0 1rem;
+      font-size: 0.9rem;
+    }
+
+    .social-login {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .social-login .btn {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      border-radius: 10px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      border: 2px solid #e9ecef;
+      background: white;
+      color: #333;
+      text-decoration: none;
+    }
+
+    .social-login .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .social-login .btn i {
+      margin-right: 0.8rem;
+      font-size: 1.2rem;
+    }
+
+    .btn-google:hover {
+      border-color: #db4437;
+      color: #db4437;
+    }
+
+    .btn-facebook {
+      background: #1877f2 !important;
+      color: white !important;
+      border: none !important;
+    }
+
+    .btn-facebook:hover {
+      background: #166fe5 !important;
+      color: white !important;
+    }
+
+    /* Features Section */
+    .features-section {
+      background: white;
+      padding: 4rem 0;
+      border-radius: 16px;
+      margin: 2rem 0;
+    }
+
+    .feature-card {
+      text-align: center;
+      padding: 2rem;
+      transition: transform 0.3s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .feature-icon {
+      width: 80px;
+      height: 80px;
+      background: var(--gradient-primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+    }
+
+    .feature-icon i {
+      font-size: 2rem;
+      color: white;
+    }
+
+    .feature-card h4 {
+      color: #333;
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+
+    .feature-card p {
+      color: #6c757d;
+      line-height: 1.6;
+    }
+
+    /* Form Validation */
+    .is-invalid {
+      border-color: #dc3545 !important;
+      box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25) !important;
+    }
+
+    .invalid-feedback {
+      display: none;
+      width: 100%;
+      margin-top: -1rem;
+      margin-bottom: 1rem;
+      font-size: 0.875em;
+      color: #dc3545;
+    }
+
+    .was-validated .form-control:invalid ~ .invalid-feedback,
+    .form-control.is-invalid ~ .invalid-feedback {
+      display: block;
+    }
+
+    .is-valid {
+      border-color: #198754 !important;
+      box-shadow: 0 0 0 0.2rem rgba(25, 135, 84, 0.25) !important;
+    }
+
+    /* User Info Display */
+    .user-info-card {
+      background:  linear-gradient(135deg, #1793c8, #0db7a3 60%, #3b82f6 100%);
+      color: white;
+      border-radius: 16px;
+      padding: 2rem;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .user-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 4px solid white;
+      margin: 0 auto 1rem;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .user-avatar i {
+      font-size: 2.5rem;
+      color: #667eea;
+    }
+
+    .user-info-card h3 {
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+
+    .user-info-card p {
+      opacity: 0.9;
+      margin-bottom: 1.5rem;
+    }
+
+    /* CART SIDEBAR STYLES */
+    .cart-sidebar {
+      position: fixed;
+      top: 0;
+      right: -400px;
+      width: 380px;
+      height: 100vh;
+      background-color: white;
+      box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+      transition: right 0.4s ease;
+      z-index: 1050;
+      overflow-y: auto;
+    }
+    
+    .cart-sidebar.open {
+      right: 0;
+    }
+    
+    .cart-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      z-index: 1040;
+      display: none;
+    }
+    
+    .cart-overlay.active {
+      display: block;
+    }
+    
+    .cart-badge {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background-color: #dc3545;
+      color: white;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .cart-item {
+      border-bottom: 1px solid #eee;
+      padding: 15px 0;
+    }
+    
+    .cart-item-img {
+      width: 70px;
+      height: 70px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+    
+    .quantity-control {
+      width: 120px;
+    }
+    
+    .empty-cart {
+      text-align: center;
+      padding: 40px 0;
+      color: #6c757d;
+    }
+    
+    .empty-cart i {
+      font-size: 48px;
+      margin-bottom: 15px;
+      color: #dee2e6;
+    }
+    
+    .cart-summary {
+      border-top: 1px solid #dee2e6;
+      padding-top: 15px;
+      margin-top: 15px;
+    }
+    
+    .add-to-cart-btn {
+      background-color: #20b2aa;
+      color: white;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s ease-in-out;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      margin-top: 10px;
+      width: 100%;
+    }
+    
+    .add-to-cart-btn:hover {
+      background-color: #1c9890;
+    }
+    
+    @media (max-width: 576px) {
+      .cart-sidebar {
+        width: 100%;
+        right: -100%;
+      }
+    }
+
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .auth-content {
+        padding: 2rem 1.5rem;
+      }
+      
+      .auth-tabs .nav-link {
+        padding: 1rem 1.5rem;
+        font-size: 1rem;
+      }
+      
+      .auth-hero h1 {
+        font-size: 2rem;
+      }
+      
+      .feature-card {
+        padding: 1.5rem;
+      }
+      
+      .social-login {
+        flex-direction: column;
+      }
+    }
+
+    /* Loading States */
+    .btn-loading {
+      position: relative;
+      pointer-events: none;
+    }
+
+    .btn-loading::after {
+      content: "";
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      margin: auto;
+      border: 3px solid transparent;
+      border-top-color: #ffffff;
+      border-radius: 50%;
+      animation: button-loading-spinner 1s ease infinite;
+    }
+
+    @keyframes button-loading-spinner {
+      from {
+        transform: rotate(0turn);
+      }
+      to {
+        transform: rotate(1turn);
+      }
+    }
+
+    /* Toast Notifications */
+    .toast-container {
+      position: fixed;
+      top: 100px;
+      right: 20px;
+      z-index: 1055;
+    }
+
+    .toast {
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top">
+    <div class="container">
+      <a class="navbar-brand fw-bold text-primary" href="index.html">
+        <i class="fas fa-snowflake me-2"></i>COSY <span class="text-dark">Air Conditioners</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="Products.html">Products</a></li>
+          <li class="nav-item"><a class="nav-link" href="Brand.html">Brand</a></li>
+          <li class="nav-item"><a class="nav-link" href="About.html">About</a></li>
+          <li class="nav-item"><a class="nav-link" href="Compare.html">Compare</a></li>
+          <li class="nav-item"><a class="nav-link" href="Contact.html">Contact</a></li>
+          <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
+        </ul>
+        <div class="d-flex align-items-center">
+          <!-- User Dropdown (shown when logged in) -->
+          <div class="dropdown me-3" id="userDropdown" style="display: none;">
+            <button class="btn dropdown-toggle d-flex align-items-center" type="button" id="userMenu" data-bs-toggle="dropdown">
+              <i class="fas fa-user-circle me-2"></i>
+              <span id="userName">User</span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><a class="dropdown-item" href="My Profile.html"><i class="fas fa-user me-2"></i>My Profile</a></li>
+              <li><a class="dropdown-item" href="Chackout.html"><i class="fas fa-shopping-bag me-2"></i>My Orders</a></li>
+              <li><a class="dropdown-item" href=""><i class="fas fa-heart me-2"></i>Wishlist</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="#" id="logoutBtn"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+            </ul>
+          </div>
+          
+          
+          
+          <!-- Cart Button -->
+          <button class="btn position-relative" id="cartToggle">
+            <i class="fas fa-shopping-cart"></i>
+            <span class="cart-badge" id="cartCount">0</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <!-- Hero Section -->
+  <section class="auth-hero">
+    <div class="container">
+      <h1>Welcome to COSY Air Conditioners</h1>
+      <p>Join our community for exclusive deals and personalized service</p>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <div class="auth-container">
+    <div class="row">
+      <!-- User Info (shown when logged in) -->
+      <div class="col-12" id="userInfoSection" style="display: none;">
+        <div class="user-info-card">
+          <div class="user-avatar">
+            <i class="fas fa-user"></i>
+          </div>
+          <h3 id="welcomeUserName">Welcome, User!</h3>
+          <p id="welcomeUserEmail">You are successfully logged in</p>
+          <!-- <button class="btn btn-light" id="dashboardBtn">
+            <i class="fas fa-tachometer-alt me-2"></i>Go to Dashboard
+          </button> -->
+        </div>
+      </div>
+
+      <!-- Auth Card -->
+      <div class="col-12" id="authSection">
+        <div class="auth-card">
+          <ul class="nav nav-tabs auth-tabs" id="authTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="login-tab" data-bs-toggle="tab" data-bs-target="#login" type="button" role="tab">
+                <i class="fas fa-sign-in-alt me-2"></i>Login
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="signup-tab" data-bs-toggle="tab" data-bs-target="#signup" type="button" role="tab">
+                <i class="fas fa-user-plus me-2"></i>Sign Up
+              </button>
+            </li>
+          </ul>
+          
+          <div class="tab-content" id="authTabsContent">
+            <!-- Login Tab -->
+            <div class="tab-pane fade show active" id="login" role="tabpanel">
+              <div class="auth-content">
+                <h3 class="mb-4">Welcome Back</h3>
+                <p class="text-muted mb-4">Sign in to your account to continue</p>
+                
+                <!-- Social Login Buttons -->
+                <div class="social-login">
+                  <a href="#" class="btn btn-google" id="googleLoginBtn" onclick="handleSocialLogin('google')">
+                    <i class="fab fa-google"></i> Google
+                  </a>
+                  <a href="#" class="btn btn-facebook" id="facebookLoginBtn" onclick="handleSocialLogin('facebook')">
+                    <i class="fab fa-facebook-f"></i> Facebook
+                  </a>
+                </div>
+                
+                <div class="divider">
+                  <span>or continue with email</span>
+                </div>
+                
+                <form class="auth-form needs-validation" id="loginForm" novalidate>
+                  <div class="mb-3">
+                    <label for="loginEmail" class="form-label">Email Address</label>
+                    <input type="email" class="form-control" id="loginEmail" placeholder="Enter your email" required>
+                    <div class="invalid-feedback">
+                      Please enter a valid email address.
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="loginPassword" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="loginPassword" placeholder="Enter your password" required minlength="6">
+                    <div class="invalid-feedback">
+                      Password must be at least 6 characters long.
+                    </div>
+                  </div>
+                  <div class="mb-3 d-flex justify-content-between align-items-center">
+                    <div class="form-check">
+                      <input type="checkbox" class="form-check-input" id="rememberMe">
+                      <label class="form-check-label" for="rememberMe">Remember me</label>
+                    </div>
+                    <a href="#" class="text-primary text-decoration-none">Forgot Password?</a>
+                  </div>
+                  <button type="submit" class="btn btn-primary mb-4" id="loginBtn">
+                    Sign In
+                  </button>
+                </form>
+              </div>
+            </div>
+            
+            <!-- Sign Up Tab -->
+            <div class="tab-pane fade" id="signup" role="tabpanel">
+              <div class="auth-content">
+                <h3 class="mb-4">Create Account</h3>
+                <p class="text-muted mb-4">Join COSY today for the best AC solutions</p>
+                
+                <!-- Social Signup Buttons -->
+                <div class="social-login">
+                  <a href="#" class="btn btn-google" id="googleSignupBtn" onclick="handleSocialLogin('google')">
+                    <i class="fab fa-google"></i> Google
+                  </a>
+                  <a href="#" class="btn btn-facebook" id="facebookSignupBtn" onclick="handleSocialLogin('facebook')">
+                    <i class="fab fa-facebook-f"></i> Facebook
+                  </a>
+                </div>
+                
+                <div class="divider">
+                  <span>or sign up with email</span>
+                </div>
+                
+                <form class="auth-form needs-validation" id="signupForm" novalidate>
+                  <div class="row">
+                    <div class="col-md-6 mb-3">
+                      <label for="firstName" class="form-label">First Name</label>
+                      <input type="text" class="form-control" id="firstName" placeholder="First Name" required pattern="[A-Za-z\s]+">
+                      <div class="invalid-feedback">
+                        Please enter a valid first name (letters and spaces only).
+                      </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label for="lastName" class="form-label">Last Name</label>
+                      <input type="text" class="form-control" id="lastName" placeholder="Last Name" required pattern="[A-Za-z\s]+">
+                      <div class="invalid-feedback">
+                        Please enter a valid last name (letters and spaces only).
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="signupEmail" class="form-label">Email Address</label>
+                    <input type="email" class="form-control" id="signupEmail" placeholder="Enter your email" required>
+                    <div class="invalid-feedback">
+                      Please enter a valid email address.
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="signupPassword" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="signupPassword" placeholder="Create a password" required minlength="8">
+                    <div class="invalid-feedback">
+                      Password must be at least 8 characters long.
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="confirmPassword" class="form-label">Confirm Password</label>
+                    <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm your password" required>
+                    <div class="invalid-feedback">
+                      Passwords do not match.
+                    </div>
+                  </div>
+                  <div class="mb-3 form-check">
+                    <input type="checkbox" class="form-check-input" id="agreeTerms" required>
+                    <label class="form-check-label" for="agreeTerms">
+                      I agree to the <a href="#" class="text-primary text-decoration-none">Terms & Conditions</a> and <a href="#" class="text-primary text-decoration-none">Privacy Policy</a>
+                    </label>
+                    <div class="invalid-feedback">
+                      You must agree to the terms and conditions.
+                    </div>
+                  </div>
+                  <button type="submit" class="btn btn-primary mb-4" id="signupBtn">
+                    Create Account
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="features-section">
+      <div class="container">
+        <h2 class="text-center mb-5">Why Create an Account?</h2>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="feature-card">
+              <div class="feature-icon">
+                <i class="fas fa-tags"></i>
+              </div>
+              <h4>Exclusive Deals</h4>
+              <p>Get access to member-only discounts and special offers on our premium air conditioning products.</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="feature-card">
+              <div class="feature-icon">
+                <i class="fas fa-shipping-fast"></i>
+              </div>
+              <h4>Fast Tracking</h4>
+              <p>Track your orders in real-time and get notified about installation schedules and service updates.</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="feature-card">
+              <div class="feature-icon">
+                <i class="fas fa-headset"></i>
+              </div>
+              <h4>Priority Support</h4>
+              <p>Receive dedicated customer support and faster response times for all your AC needs.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cart Sidebar -->
+  <div class="cart-sidebar" id="cartSidebar">
+    <div class="p-4">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 class="m-0">Your Cart</h4>
+        <button class="btn" id="closeCart">
+          <i class="fas fa-times fa-lg"></i>
+        </button>
+      </div>
+      
+      <div id="cartItems">
+        <!-- Cart items will be dynamically added here -->
+        <div class="empty-cart">
+          <i class="fas fa-shopping-cart"></i>
+          <p>Your cart is empty</p>
+        </div>
+      </div>
+      
+      <div class="cart-summary">
+        <div class="d-flex justify-content-between mb-2">
+          <span>Subtotal:</span>
+          <span id="cartSubtotal">$0.00</span>
+        </div>
+        <div class="d-flex justify-content-between mb-3">
+          <span>Shipping:</span>
+          <span id="cartShipping">$0.00</span>
+        </div>
+        <div class="d-flex justify-content-between fw-bold mb-3">
+          <span>Total:</span>
+          <span id="cartTotal">$0.00</span>
+        </div>
+        <a href="Chackout.html" style="text-decoration: none;"><button class="btn btn-primary w-100" id="checkoutBtn" disabled>Proceed to Checkout</button></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Overlay -->
+  <div class="cart-overlay" id="cartOverlay"></div>
+
+  <!-- Footer -->
+  <footer id="contact" class="bg-dark text-light py-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-4 mb-4">
+          <h4 class="fw-bold mb-3">COSY AIRCONDITIONERS</h4>
+          <p>Your trusted partner for premium air conditioning solutions for residential and commercial growth.</p>
+          <div class="mt-4">
+            <a href="https://www.facebook.com/" class="text-light me-3"><i class="fab fa-facebook fa-2x"></i></a>
+            <a href="https://x.com/" class="text-light me-3"><i class="fab fa-twitter fa-2x"></i></a>
+            <a href="https://www.instagram.com/accounts/login/?hl=en" class="text-light me-3"><i class="fab fa-instagram fa-2x"></i></a>
+            <a href="https://pk.linkedin.com/" class="text-light"><i class="fab fa-linkedin fa-2x"></i></a>
+          </div>
+        </div>
+        <div class="col-lg-4 mb-4">
+          <h6 class="fw-bold mb-3">QUICK LINKS</h6>
+          <ul class="list-unstyled">
+            <li class="mb-2"><a href="index.html" class="text-light text-decoration-none"><i
+                  class="fas fa-chevron-right me-2"></i>Home</a></li>
+            <li class="mb-2"><a href="Products.html" class="text-light text-decoration-none"><i
+                  class="fas fa-chevron-right me-2"></i>Products</a></li>
+            <li class="mb-2"><a href="Brand.html" class="text-light text-decoration-none"><i
+                  class="fas fa-chevron-right me-2"></i>Brands</a></li>
+            <li class="mb-2"><a href="Compare.html" class="text-light text-decoration-none"><i
+                  class="fas fa-chevron-right me-2"></i>Compare</a></li>
+            <li class="mb-2"><a href="About.HTML" class="text-light text-decoration-none"><i
+                  class="fas fa-chevron-right me-2"></i>About Us</a></li>
+            <li class="mb-2"><a href="Contact.html" class="text-light text-decoration-none"><i
+                  class="fas fa-chevron-right me-2"></i>Contact</a></li>
+          </ul>
+        </div>
+        <div class="col-lg-4 mb-4">
+          <h6 class="fw-bold mb-3">CONTACT INFO</h6>
+          <p><i class="fas fa-phone me-2"></i> +21 001 32 2021</p>
+          <p><i class="fas fa-envelope me-2"></i> info@cosy.com</p>
+          <p><i class="fas fa-globe me-2"></i> www.cosy.com</p>
+          <p><i class="fas fa-map-marker-alt me-2"></i> 123 Cooling Street, Comfort City</p>
+        </div>
+      </div>
+      <hr class="my-4">
+      <div class="text-center">
+        <p>&copy; 2023 COSY Air Conditioners. All Rights Reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="auth.js"></script>
+
+  <script>
+    // --- CART FUNCTIONALITY ---
+    // Load cart from localStorage on page load
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    
+    // DOM Elements
+    const cartSidebar = document.getElementById('cartSidebar');
+    const cartOverlay = document.getElementById('cartOverlay');
+    const cartToggle = document.getElementById('cartToggle');
+    const closeCart = document.getElementById('closeCart');
+    const cartItems = document.getElementById('cartItems');
+    const cartCount = document.getElementById('cartCount');
+    const cartSubtotal = document.getElementById('cartSubtotal');
+    const cartShipping = document.getElementById('cartShipping');
+    const cartTotal = document.getElementById('cartTotal');
+    const checkoutBtn = document.getElementById('checkoutBtn');
+    
+    // Save cart to localStorage
+    function saveCartToStorage() {
+      localStorage.setItem('cart', JSON.stringify(cart));
+    }
+    
+    // Open cart
+    cartToggle.addEventListener('click', () => {
+      cartSidebar.classList.add('open');
+      cartOverlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    });
+    
+    // Close cart
+    closeCart.addEventListener('click', closeCartSidebar);
+    cartOverlay.addEventListener('click', closeCartSidebar);
+    
+    function closeCartSidebar() {
+      cartSidebar.classList.remove('open');
+      cartOverlay.classList.remove('active');
+      document.body.style.overflow = 'auto';
+    }
+    
+    // Update cart display
+    function updateCartDisplay() {
+      let totalItems = 0;
+      cart.forEach(item => {
+        totalItems += item.quantity;
+      });
+      cartCount.textContent = totalItems;
+      
+      cartItems.innerHTML = '';
+      
+      if (cart.length === 0) {
+        cartItems.innerHTML = `
+          <div class="empty-cart">
+            <i class="fas fa-shopping-cart"></i>
+            <p>Your cart is empty</p>
+          </div>
+        `;
+        checkoutBtn.disabled = true;
+      } else {
+        cart.forEach(item => {
+          const itemTotal = item.price * item.quantity;
+          const cartItemElement = document.createElement('div');
+          cartItemElement.className = 'cart-item';
+          cartItemElement.innerHTML = `
+            <div class="d-flex justify-content-between align-items-start">
+              <div class="d-flex">
+                <img src="${item.image}" class="cart-item-img me-3" alt="${item.name}">
+                <div>
+                  <h6 class="mb-1">${item.name}</h6>
+                  <p class="mb-1 text-muted">$${item.price.toFixed(2)}</p>
+                </div>
+              </div>
+              <button class="btn btn-sm btn-outline-danger remove-item" data-id="${item.id}">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mt-2">
+              <div class="input-group quantity-control">
+                <button class="btn btn-outline-secondary decrease-qty" data-id="${item.id}">-</button>
+                <input type="text" class="form-control text-center item-qty" value="${item.quantity}" data-id="${item.id}">
+                <button class="btn btn-outline-secondary increase-qty" data-id="${item.id}">+</button>
+              </div>
+              <span class="fw-bold">$${itemTotal.toFixed(2)}</span>
+            </div>
+          `;
+          cartItems.appendChild(cartItemElement);
+        });
+        
+        checkoutBtn.disabled = false;
+      }
+      
+      // Calculate totals
+      const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+      const shipping = subtotal > 0 ? 15.00 : 0;
+      const total = subtotal + shipping;
+      
+      cartSubtotal.textContent = `$${subtotal.toFixed(2)}`;
+      cartShipping.textContent = `$${shipping.toFixed(2)}`;
+      cartTotal.textContent = `$${total.toFixed(2)}`;
+    }
+    
+    // Add event listeners for cart actions
+    document.addEventListener('click', (e) => {
+      // Remove item
+      if (e.target.closest('.remove-item')) {
+        const id = e.target.closest('.remove-item').dataset.id;
+        removeFromCart(id);
+      }
+      
+      // Decrease quantity
+      if (e.target.closest('.decrease-qty')) {
+        const id = e.target.closest('.decrease-qty').dataset.id;
+        updateQuantity(id, -1);
+      }
+      
+      // Increase quantity
+      if (e.target.closest('.increase-qty')) {
+        const id = e.target.closest('.increase-qty').dataset.id;
+        updateQuantity(id, 1);
+      }
+    });
+    
+    // Update quantity
+    function updateQuantity(id, change) {
+      const item = cart.find(item => item.id === id);
+      if (item) {
+        item.quantity += change;
+        if (item.quantity < 1) {
+          removeFromCart(id);
+        } else {
+          saveCartToStorage();
+          updateCartDisplay();
+        }
+      }
+    }
+    
+    // Remove from cart
+    function removeFromCart(id) {
+      cart = cart.filter(item => item.id !== id);
+      saveCartToStorage();
+      updateCartDisplay();
+      showToast('Item removed from cart', 'info');
+    }
+    
+    // Add to cart function (can be called from other pages)
+    function addToCart(product) {
+      const existingItem = cart.find(item => item.id === product.id);
+      
+      if (existingItem) {
+        existingItem.quantity += 1;
+      } else {
+        cart.push({
+          id: product.id,
+          name: product.name,
+          price: product.price,
+          image: product.image,
+          quantity: 1
+        });
+      }
+      
+      saveCartToStorage();
+      updateCartDisplay();
+      showToast(`${product.name} added to cart`, 'success');
+    }
+    
+    // Initialize cart on page load
+    updateCartDisplay();
+    
+    // --- AUTH FUNCTIONALITY ---
+    
+    // Handle Social Login
+    function handleSocialLogin(provider) {
+      event.preventDefault();
+      
+      // Show loading state
+      showToast(`Connecting to ${provider}...`, 'info');
+      
+      // Simulate API call delay
+      setTimeout(() => {
+        let userData = {};
+        
+        if (provider === 'google') {
+          userData = {
+            firstName: 'Google',
+            lastName: 'User',
+            email: 'google.user@example.com',
+            loginMethod: 'google'
+          };
+        } else if (provider === 'facebook') {
+          userData = {
+            firstName: 'Facebook',
+            lastName: 'User',
+            email: 'facebook.user@example.com',
+            loginMethod: 'facebook'
+          };
+        }
+        
+        // Use the shared login function
+        loginUser(userData);
+        showToast(`${provider} authentication successful!`, 'success');
+        
+        // Redirect to products page
+        setTimeout(() => {
+          window.location.href = 'Products.html';
+        }, 1500);
+      }, 1500);
+    }
+
+    // Form validation
+    (function () {
+      'use strict'
+      
+      // Fetch all the forms we want to apply custom Bootstrap validation styles to
+      const forms = document.querySelectorAll('.needs-validation')
+      
+      // Loop over them and prevent submission
+      Array.from(forms).forEach(form => {
+        form.addEventListener('submit', event => {
+          if (!form.checkValidity()) {
+            event.preventDefault()
+            event.stopPropagation()
+          }
+          
+          form.classList.add('was-validated')
+        }, false)
+      })
+    })()
+
+    // NAME VALIDATION - Only alphabetic characters and spaces
+    document.getElementById('firstName').addEventListener('input', function() {
+      const nameRegex = /^[A-Za-z\s]*$/;
+      
+      if (!nameRegex.test(this.value)) {
+        this.setCustomValidity('Name can only contain letters and spaces');
+      } else {
+        this.setCustomValidity('');
+      }
+    });
+
+    document.getElementById('lastName').addEventListener('input', function() {
+      const nameRegex = /^[A-Za-z\s]*$/;
+      
+      if (!nameRegex.test(this.value)) {
+        this.setCustomValidity('Name can only contain letters and spaces');
+      } else {
+        this.setCustomValidity('');
+      }
+    });
+
+    // Custom validation for confirm password
+    document.getElementById('confirmPassword').addEventListener('input', function() {
+      const password = document.getElementById('signupPassword').value;
+      const confirmPassword = this.value;
+      
+      if (password !== confirmPassword) {
+        this.setCustomValidity('Passwords do not match');
+      } else {
+        this.setCustomValidity('');
+      }
+    });
+
+    // Real-time email validation
+    document.getElementById('loginEmail').addEventListener('input', function() {
+      if (this.validity.typeMismatch) {
+        this.setCustomValidity('Please enter a valid email address');
+      } else {
+        this.setCustomValidity('');
+      }
+    });
+
+    document.getElementById('signupEmail').addEventListener('input', function() {
+      if (this.validity.typeMismatch) {
+        this.setCustomValidity('Please enter a valid email address');
+      } else {
+        this.setCustomValidity('');
+      }
+    });
+
+    // Login form submission
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      if (!this.checkValidity()) {
+        e.stopPropagation();
+        return;
+      }
+      
+      const email = document.getElementById('loginEmail').value;
+      const password = document.getElementById('loginPassword').value;
+      const loginBtn = document.getElementById('loginBtn');
+      
+      // Show loading state
+      loginBtn.disabled = true;
+      loginBtn.classList.add('btn-loading');
+      loginBtn.textContent = 'Signing In...';
+      
+      // Simulate API call
+      setTimeout(() => {
+        const user = {
+          firstName: 'John',
+          lastName: 'Doe',
+          email: email,
+          loginMethod: 'email'
+        };
+        
+        // Use the shared login function
+        loginUser(user);
+        
+        // Reset button state
+        loginBtn.disabled = false;
+        loginBtn.classList.remove('btn-loading');
+        loginBtn.textContent = 'Sign In';
+        
+        showToast('Login successful! Redirecting...', 'success');
+        
+        // Redirect to products page after successful login
+        setTimeout(() => {
+          window.location.href = 'Products.html';
+        }, 1500);
+        
+        // Reset form
+        this.classList.remove('was-validated');
+        this.reset();
+      }, 1500);
+    });
+
+    // Signup form submission
+    document.getElementById('signupForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      if (!this.checkValidity()) {
+        e.stopPropagation();
+        return;
+      }
+      
+      const firstName = document.getElementById('firstName').value;
+      const lastName = document.getElementById('lastName').value;
+      const email = document.getElementById('signupEmail').value;
+      const password = document.getElementById('signupPassword').value;
+      const signupBtn = document.getElementById('signupBtn');
+      
+      // Show loading state
+      signupBtn.disabled = true;
+      signupBtn.classList.add('btn-loading');
+      signupBtn.textContent = 'Creating Account...';
+      
+      // Simulate API call
+      setTimeout(() => {
+        const user = {
+          firstName: firstName,
+          lastName: lastName,
+          email: email,
+          loginMethod: 'email'
+        };
+        
+        // Use the shared login function
+        loginUser(user);
+        
+        // Reset button state
+        signupBtn.disabled = false;
+        signupBtn.classList.remove('btn-loading');
+        signupBtn.textContent = 'Create Account';
+        
+        showToast('Account created successfully! Redirecting...', 'success');
+        
+        // Redirect to products page after successful signup
+        setTimeout(() => {
+          window.location.href = 'Products.html';
+        }, 1500);
+        
+        // Reset form
+        this.classList.remove('was-validated');
+        this.reset();
+        
+        // Switch to login tab
+        const loginTab = new bootstrap.Tab(document.getElementById('login-tab'));
+        loginTab.show();
+      }, 1500);
+    });
+
+    // Logout functionality
+    document.getElementById('logoutBtn').addEventListener('click', function(e) {
+      e.preventDefault();
+      logoutUser();
+      showToast('Logged out successfully', 'info');
+    });
+
+    // Initialize page on load
+    document.addEventListener('DOMContentLoaded', function() {
+      initializeAuth();
+      updateCartDisplay();
+      
+      // If user is already logged in, redirect to products
+      if (isUserLoggedIn()) {
+        setTimeout(() => {
+          window.location.href = 'Products.html';
+        }, 1000);
+      }
+    });
+  </script>
+</body>
+</html>

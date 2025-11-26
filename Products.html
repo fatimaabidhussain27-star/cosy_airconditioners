@@ -1,0 +1,1551 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>COSY Air Conditioners - Products</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="main.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="auth-utils.js"></script>
+  <!-- Custom CSS -->
+  <style>
+    /* ADDED: Ensure all product cards have the same height */
+    .product-card-wrapper {
+      display: flex;
+    }
+    
+    .product-card {
+      background-color: #ffffff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease-in-out;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      width: 100%;
+    }
+
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    }
+
+    /* --- Image and Badge Styling --- */
+    .card-image-container {
+      position: relative;
+      padding: 20px;
+      background-color: #ffffff;
+      flex-shrink: 0; /* ADDED: Prevent image container from shrinking */
+    }
+
+    .product-image {
+      max-height: 100%;
+    }
+
+    .product-image {
+      width: 100%;
+      border-radius: 8px;
+      display: block;
+      min-height: 180px;
+      height: 200px; /* ADDED: Fixed height for all images */
+      object-fit: contain; /* ADDED: Ensure images maintain aspect ratio */
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#f0f0f0"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="10" fill="#999">Image Placeholder</text></svg>');
+    }
+
+    .haier-badge {
+      position: absolute;
+      top: 30px;
+      right: 20px;
+      background-color: #20b2aa;
+      color: #ffffff;
+      padding: 4px 10px;
+      border-radius: 5px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    /* --- Details Section Styling --- */
+    .card-details {
+      padding: 20px;
+      display: flex; /* ADDED: Use flexbox for layout */
+      flex-direction: column; /* ADDED: Stack elements vertically */
+      flex-grow: 1; /* ADDED: Allow details section to grow and fill space */
+    }
+
+    .product-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #333333;
+      margin: 0 0 10px 0;
+      /* ADDED: Limit title to 2 lines with ellipsis */
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* --- Rating Styling --- */
+    .rating {
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+    }
+
+    .star {
+      font-size: 1.2rem;
+      color: #e0e0e0;
+      margin-right: 2px;
+    }
+
+    .star.filled,
+    .star.half-filled {
+      color: #ffc107;
+    }
+
+    .rating-text {
+      font-size: 1rem;
+      color: #777777;
+      margin-left: 5px;
+    }
+
+    /* --- Feature List Styling --- */
+    .features {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 20px 0;
+      flex-grow: 1; /* ADDED: Allow features to take available space */
+    }
+
+    .feature-item {
+      font-size: 1rem;
+      color: #4e4e4e;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+    }
+
+    .check-mark {
+      color: #20b2aa;
+      font-size: 1.2rem;
+      margin-right: 8px;
+      font-weight: bold;
+    }
+
+    /* --- Price and Button Styling --- */
+    .price-and-action {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 15px;
+      flex-shrink: 0; /* ADDED: Prevent price section from shrinking */
+    }
+
+    .price {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #20b2aa;
+    }
+
+    .view-details-btn {
+      background-color: #20b2aa;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s ease-in-out;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      white-space: nowrap; /* ADDED: Prevent button text from wrapping */
+    }
+
+    .view-details-btn:hover {
+      background-color: #1c9890;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Hero Section */
+    .page-hero {
+      background:linear-gradient(90deg,#1793c8,#0db7a3 60%,#3b82f6 100%);
+      color:#fff;
+      border:12px;
+      padding: 100px 0;
+      margin:24px 0;
+    }
+
+    .hero h2 {
+      font-size: 2.5rem;
+      margin-bottom: 0;
+    }
+
+    .hero h1 {
+      font-size: 4rem;
+      margin-bottom: 1.5rem;
+      text-shadow: 2px 2px 4px rgba(2, 2, 2, 0.2);
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+    }
+
+    /* Buttons - Rectangular Style */
+    .btn {
+      padding: 12px 30px;
+      font-weight: 600;
+      border-radius: 4px;
+      transition: all 0.3s ease;
+      border: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(to right, var(--primary-color), var(--primary-dark));
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(to right, var(--primary-dark), var(--primary-color));
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(13, 148, 136, 0.3);
+    }
+
+    .btn-outline-light {
+      background: transparent;
+      border: 2px solid white;
+      color: white;
+    }
+
+    .btn-outline-light:hover {
+      background: white;
+      color: var(--primary-color);
+    }
+
+    .btn-outline-primary {
+      background: transparent;
+      border: 2px solid var(--primary-color);
+      color: var(--primary-color);
+    }
+
+    .btn-outline-primary:hover {
+      background: var(--primary-color);
+      color: white;
+    }
+
+    .btn-light {
+      background: white;
+      color: var(--primary-color);
+      font-weight: 600;
+    }
+
+    .btn-light:hover {
+      background: #f8f9fa;
+      color: var(--primary-dark);
+    }
+
+    /* Section Padding */
+    section {
+      padding: 80px 0;
+    }
+
+    /* Product Categories */
+    .card {
+      border: none;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      height: 100%;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .category-card {
+      padding: 30px 20px;
+      text-align: center;
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    }
+    
+    .filter-section .form-select, .filter-section .form-control {
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+
+    /* CART SIDEBAR STYLES */
+    .cart-sidebar {
+      position: fixed;
+      top: 0;
+      right: -400px;
+      width: 380px;
+      height: 100vh;
+      background-color: white;
+      box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+      transition: right 0.4s ease;
+      z-index: 1050;
+      overflow-y: auto;
+    }
+    
+    .cart-sidebar.open {
+      right: 0;
+    }
+    
+    .cart-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      z-index: 1040;
+      display: none;
+    }
+    
+    .cart-overlay.active {
+      display: block;
+    }
+    
+    .cart-badge {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background-color: #dc3545;
+      color: white;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .cart-item {
+      border-bottom: 1px solid #eee;
+      padding: 15px 0;
+    }
+    
+    .cart-item-img {
+      width: 70px;
+      height: 70px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+    
+    .quantity-control {
+      width: 120px;
+    }
+    
+    .empty-cart {
+      text-align: center;
+      padding: 40px 0;
+      color: #6c757d;
+    }
+    
+    .empty-cart i {
+      font-size: 48px;
+      margin-bottom: 15px;
+      color: #dee2e6;
+    }
+    
+    .cart-summary {
+      border-top: 1px solid #dee2e6;
+      padding-top: 15px;
+      margin-top: 15px;
+    }
+    
+    .add-to-cart-btn {
+      background-color: #20b2aa;
+      color: white;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s ease-in-out;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      margin-top: 10px;
+      width: 100%;
+      flex-shrink: 0; /* ADDED: Prevent button from shrinking */
+    }
+    
+    .add-to-cart-btn:hover {
+      background-color: #1c9890;
+    }
+    
+    @media (max-width: 576px) {
+      .cart-sidebar {
+        width: 100%;
+        right: -100%;
+      }
+      
+      .product-image {
+        height: 180px; /* ADDED: Slightly smaller on mobile */
+      }
+      
+      .product-title {
+        font-size: 1.3rem; /* ADDED: Slightly smaller title on mobile */
+      }
+    }
+  </style>
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top">
+    <div class="container">
+      <a class="navbar-brand fw-bold text-primary" href="index.html">
+        <i class="fas fa-snowflake me-2"></i>COSY <span class="text-dark">Air Conditioners</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="Products.html">Products</a></li>
+          <li class="nav-item"><a class="nav-link" href="Brand.html">Brand</a></li>
+          <li class="nav-item"><a class="nav-link" href="About.html">About</a></li>
+          <li class="nav-item"><a class="nav-link" href="Compare.html">Compare</a></li>
+          <li class="nav-item"><a class="nav-link" href="Contact.html">Contact</a></li>
+          <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
+        </ul>
+        <div class="d-flex align-items-center">
+          <!-- User Dropdown (shown when logged in) -->
+          <div class="dropdown me-3" id="userDropdown" style="display: none;">
+            <button class="btn dropdown-toggle d-flex align-items-center" type="button" id="userMenu" data-bs-toggle="dropdown">
+              <i class="fas fa-user-circle me-2"></i>
+              <span id="userName">User</span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><a class="dropdown-item" href="My Profile.html"><i class="fas fa-user me-2"></i>My Profile</a></li>
+              <li><a class="dropdown-item" href="Chackout.html"><i class="fas fa-shopping-bag me-2"></i>My Orders</a></li>
+              <li><a class="dropdown-item" href="#" id="dropdownCart"><i class="fas fa-shopping-cart me-2"></i>Cart</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="#" id="logoutBtn"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+            </ul>
+          </div>
+          
+          <!-- Cart Button -->
+          <button class="btn position-relative" id="cartToggle">
+            <i class="fas fa-shopping-cart"></i>
+            <span class="cart-badge" id="cartCount">0</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Hero -->
+  <section class="page-hero text-center text-white">
+    <div class="container">
+      <h1 class="fw-bold mb-3">Our Products</h1>
+      <p class="fs-5">Discover our comprehensive range of air conditioning solutions from top brands</p>
+    </div>
+  </section>
+
+  <!-- Products Section -->
+<section class="products-section py-5">
+  <div class="container">
+    <!-- Filter Bar -->
+    <div class="card p-4 mb-5 shadow-sm border-0">
+      <div class="row g-3 align-items-center">
+        <div class="col-md-3">
+          <input type="text" id="searchInput" class="form-control" placeholder="🔍 Search products...">
+        </div>
+        <div class="col-md-3">
+          <select id="categoryFilter" class="form-select">
+            <option value="">All Categories</option>
+            <option>Central Air Conditioner</option>
+            <option>Portable Air Conditioner</option>
+            <option>Cassette Air Conditioner</option>
+            <option>Split Air Conditioner</option>
+            <option>Window Air Conditioner</option>
+            <option>Floor Mounted Air Conditioner</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <select id="brandFilter" class="form-select">
+            <option value="">All Brands</option>
+            <option>DAWLANCE</option>
+            <option>GREE</option>
+            <option>HAIER</option>
+            <option>KENWOOD</option>
+            <option>ORIENT</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <select id="sortFilter" class="form-select">
+            <option value="">Sort By</option>
+            <option value="name">Name</option>
+            <option value="price">Price</option>
+            <option value="rating">Rating</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Product Grid -->
+    <div class="row g-4 mt-4" id="productGrid">
+    
+    <!-- ✅ FULL 26 PRODUCT CARDS START -->
+<!-- 1 -->
+<div class="col-md-6 col-lg-4 product-card-wrapper"
+  data-brand="DAWLANCE" data-category="Split Air Conditioner" data-name="Dawlance Split AC 1.5 Ton"
+  data-price="649" data-rating="4.5">
+  <div class="product-card">
+    <div class="card-image-container">
+      <img src="d1.png" class="product-image" alt="Dawlance Split AC">
+      <div class="haier-badge">DAWLANCE</div>
+    </div>
+    <div class="card-details">
+      <h3 class="product-title">Dawlance Split AC 1.5 Ton</h3>
+      <div class="rating">★★★★☆ <span class="rating-text">(4.5)</span></div>
+      <ul class="features">
+        <li class="feature-item">✓ 1.5 Ton Capacity</li>
+        <li class="feature-item">✓ Inverter Technology</li>
+      </ul>
+      <div class="price-and-action">
+        <span class="price">$649</span>
+        <a href="DD1.html"><button class="view-details-btn">View Details</button></a>
+      </div>
+      <button class="add-to-cart-btn" data-id="1" data-name="Dawlance Split AC 1.5 Ton" data-price="649" data-image="d1.png">
+        <i class="fas fa-cart-plus me-2"></i>Add to Cart
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- 2 -->
+<div class="col-md-6 col-lg-4 product-card-wrapper"
+  data-brand="KENWOOD" data-category="Split Air Conditioner" data-name="Kenwood Inverter AC 2 Ton"
+  data-price="899" data-rating="4.8">
+  <div class="product-card">
+    <div class="card-image-container">
+      <img src="k1.jpeg" class="product-image" alt="Kenwood Inverter AC">
+      <div class="haier-badge">KENWOOD</div>
+    </div>
+    <div class="card-details">
+      <h3 class="product-title">Kenwood Inverter AC 2 Ton</h3>
+      <div class="rating">★★★★★ <span class="rating-text">(4.8)</span></div>
+      <ul class="features">
+        <li class="feature-item">✓ Turbo Cooling</li>
+        <li class="feature-item">✓ 5-Star Energy Rating</li>
+      </ul>
+      <div class="price-and-action">
+        <span class="price">$899</span>
+        <a href="KK1.html"><button class="view-details-btn">View Details</button></a>
+      </div>
+      <button class="add-to-cart-btn" data-id="2" data-name="Kenwood Inverter AC 2 Ton" data-price="899" data-image="k1.jpeg">
+        <i class="fas fa-cart-plus me-2"></i>Add to Cart
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- 3 -->
+<div class="col-md-6 col-lg-4 product-card-wrapper"
+  data-brand="GREE" data-category="Split Air Conditioner" data-name="Gree Fairy Inverter AC 1 Ton"
+  data-price="640" data-rating="4.7">
+  <div class="product-card">
+    <div class="card-image-container">
+      <img src="g2.jpg" class="product-image" alt="Gree Fairy Inverter AC">
+      <div class="haier-badge">GREE</div>
+    </div>
+    <div class="card-details">
+      <h3 class="product-title">Gree Fairy Inverter AC 1 Ton</h3>
+      <div class="rating">★★★★★ <span class="rating-text">(4.7)</span></div>
+      <ul class="features">
+        <li class="feature-item">✓ Smart Wi-Fi Control</li>
+        <li class="feature-item">✓ Heat & Cool Mode</li>
+      </ul>
+      <div class="price-and-action">
+        <span class="price">$640</span>
+        <a href="GG1.html"><button class="view-details-btn">View Details</button></a>
+      </div>
+      <button class="add-to-cart-btn" data-id="3" data-name="Gree Fairy Inverter AC 1 Ton" data-price="640" data-image="g2.jpg">
+        <i class="fas fa-cart-plus me-2"></i>Add to Cart
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- 4 -->
+<div class="col-md-6 col-lg-4 product-card-wrapper"
+  data-brand="DAWLANCE" data-category="Split Air Conditioner" data-name="Dawlance Inverter Power Cool"
+  data-price="690" data-rating="4.6">
+  <div class="product-card">
+    <div class="card-image-container">
+      <img src="d3.png" class="product-image" alt="Dawlance Inverter Power">
+      <div class="haier-badge">DAWLANCE</div>
+    </div>
+    <div class="card-details">
+      <h3 class="product-title">Dawlance Inverter Power</h3>
+      <div class="rating">★★★★★ <span class="rating-text">(4.6)</span></div>
+      <ul class="features">
+        <li class="feature-item">✓ Self Cleaning</li>
+        <li class="feature-item">✓ Sleep Mode</li>
+      </ul>
+      <div class="price-and-action">
+        <span class="price">$690</span>
+        <a href="DD2.html"><button class="view-details-btn">View Details</button></a>
+      </div>
+      <button class="add-to-cart-btn" data-id="4" data-name="Dawlance Inverter Power" data-price="690" data-image="d3.png">
+        <i class="fas fa-cart-plus me-2"></i>Add to Cart
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- 5 -->
+<div class="col-md-6 col-lg-4 product-card-wrapper"
+  data-brand="GREE" data-category="Split Air Conditioner" data-name="Gree EcoStar 1 Ton"
+  data-price="625" data-rating="4.5">
+  <div class="product-card">
+    <div class="card-image-container">
+      <img src="g3.png" class="product-image" alt="Gree EcoStar">
+      <div class="haier-badge">GREE</div>
+    </div>
+    <div class="card-details">
+      <h3 class="product-title">Gree EcoStar 1 Ton</h3>
+      <div class="rating">★★★★☆ <span class="rating-text">(4.5)</span></div>
+      <ul class="features">
+        <li class="feature-item">✓ Auto Clean</li>
+        <li class="feature-item">✓ Turbo Cooling</li>
+      </ul>
+      <div class="price-and-action">
+        <span class="price">$625</span>
+        <a href="GG2.html"><button class="view-details-btn">View Details</button></a>
+      </div>
+      <button class="add-to-cart-btn" data-id="5" data-name="Gree EcoStar 1 Ton" data-price="625" data-image="g3.png">
+        <i class="fas fa-cart-plus me-2"></i>Add to Cart
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- 6 -->
+<div class="col-md-6 col-lg-4 product-card-wrapper"
+  data-brand="HAIER" data-category="Split Air Conditioner" data-name="Haier Turbo Cool 2 Ton"
+  data-price="890" data-rating="4.8">
+  <div class="product-card">
+    <div class="card-image-container">
+      <img src="h3.jpg" class="product-image" alt="Haier Turbo Cool">
+      <div class="haier-badge">HAIER</div>
+    </div>
+    <div class="card-details">
+      <h3 class="product-title">Haier Turbo Cool 2 Ton</h3>
+      <div class="rating">★★★★★ <span class="rating-text">(4.8)</span></div>
+      <ul class="features">
+        <li class="feature-item">✓ Turbo Cooling</li>
+        <li class="feature-item">✓ Auto Restart</li>
+      </ul>
+      <div class="price-and-action">
+        <span class="price">$890</span>
+        <a href="HH1.html"><button class="view-details-btn">View Details</button></a>
+      </div>
+      <button class="add-to-cart-btn" data-id="6" data-name="Haier Turbo Cool 2 Ton" data-price="890" data-image="h3.jpg">
+        <i class="fas fa-cart-plus me-2"></i>Add to Cart
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- 7 -->
+<div class="col-md-6 col-lg-4 product-card-wrapper"
+  data-brand="KENWOOD" data-category="Split Air Conditioner" data-name="Kenwood SmartCool 1.5 Ton"
+  data-price="670" data-rating="4.4">
+  <div class="product-card">
+    <div class="card-image-container">
+      <img src="k3.png" class="product-image" alt="Kenwood SmartCool">
+      <div class="haier-badge">KENWOOD</div>
+    </div>
+    <div class="card-details">
+      <h3 class="product-title">Kenwood SmartCool 1.5 Ton</h3>
+      <div class="rating">★★★★☆ <span class="rating-text">(4.4)</span></div>
+      <ul class="features">
+        <li class="feature-item">✓ Auto Cleaning</li>
+        <li class="feature-item">✓ Silent Mode</li>
+      </ul>
+      <div class="price-and-action">
+        <span class="price">$670</span>
+        <a href="KK2.html"><button class="view-details-btn">View Details</button></a>
+      </div>
+      <button class="add-to-cart-btn" data-id="7" data-name="Kenwood SmartCool 1.5 Ton" data-price="670" data-image="k3.png">
+        <i class="fas fa-cart-plus me-2"></i>Add to Cart
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- 8 -->
+<div class="col-md-6 col-lg-4 product-card-wrapper"
+  data-brand="ORIENT" data-category="Split Air Conditioner" data-name="Orient Ultron 1 Ton"
+  data-price="620" data-rating="4.2">
+  <div class="product-card">
+    <div class="card-image-container">
+      <img src="o4.jpg" class="product-image" alt="Orient Ultron">
+      <div class="haier-badge">ORIENT</div>
+    </div>
+    <div class="card-details">
+      <h3 class="product-title">Orient Ultron 1 Ton</h3>
+      <div class="rating">★★★★☆ <span class="rating-text">(4.2)</span></div>
+      <ul class="features">
+        <li class="feature-item">✓ Wi-Fi Control</li>
+        <li class="feature-item">✓ Eco Mode</li>
+      </ul>
+      <div class="price-and-action">
+        <span class="price">$620</span>
+        <a href="OO1.html"><button class="view-details-btn">View Details</button></a>
+      </div>
+      <button class="add-to-cart-btn" data-id="8" data-name="Orient Ultron 1 Ton" data-price="620" data-image="o4.jpg">
+        <i class="fas fa-cart-plus me-2"></i>Add to Cart
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- 9 -->
+<div class="col-md-6 col-lg-4 product-card-wrapper"
+  data-brand="ORIENT" data-category="Window Air Conditioner" data-name="Orient Window Chill 1.5 Ton"
+  data-price="555" data-rating="4.1">
+  <div class="product-card">
+    <div class="card-image-container">
+      <img src="o2.jpg" class="product-image" alt="Orient Window Chill">
+      <div class="haier-badge">ORIENT</div>
+    </div>
+    <div class="card-details">
+      <h3 class="product-title">Orient Window Chill 1.5 Ton</h3>
+      <div class="rating">★★★★☆ <span class="rating-text">(4.1)</span></div>
+      <ul class="features">
+        <li class="feature-item">✓ Easy Installation</li>
+        <li class="feature-item">✓ Quiet Operation</li>
+      </ul>
+      <div class="price-and-action">
+        <span class="price">$555</span>
+        <a href="OO2.html"><button class="view-details-btn">View Details</button></a>
+      </div>
+      <button class="add-to-cart-btn" data-id="9" data-name="Orient Window Chill 1.5 Ton" data-price="555" data-image="o2.jpg">
+        <i class="fas fa-cart-plus me-2"></i>Add to Cart
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- 10 -->
+<div class="col-md-6 col-lg-4 product-card-wrapper"
+  data-brand="GREE" data-category="Window Air Conditioner" data-name="Gree Window AC 1 Ton"
+  data-price="480" data-rating="4.2">
+  <div class="product-card">
+    <div class="card-image-container">
+      <img src="g1.jpeg" class="product-image" alt="Gree Window AC">
+      <div class="haier-badge">GREE</div>
+    </div>
+    <div class="card-details">
+      <h3 class="product-title">Gree Window AC 1 Ton</h3>
+      <div class="rating">★★★★☆ <span class="rating-text">(4.2)</span></div>
+      <ul class="features">
+        <li class="feature-item">✓ Compact Design</li>
+        <li class="feature-item">✓ Energy Efficient</li>
+      </ul>
+      <div class="price-and-action">
+        <span class="price">$480</span>
+        <a href="GG3.html"><button class="view-details-btn">View Details</button></a>
+      </div>
+      <button class="add-to-cart-btn" data-id="10" data-name="Gree Window AC 1 Ton" data-price="480" data-image="g1.jpeg">
+        <i class="fas fa-cart-plus me-2"></i>Add to Cart
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- 11 -->
+<div class="col-md-6 col-lg-4 product-card-wrapper"
+  data-brand="GREE" data-category="Cassette Air Conditioner" data-name="Gree Ceiling Pro 2 Ton"
+  data-price="990" data-rating="4.6">
+  <div class="product-card">
+    <div class="card-image-container">
+      <img src="g4.jpg" class="product-image" alt="Gree Ceiling Pro">
+      <div class="haier-badge">GREE</div>
+    </div>
+    <div class="card-details">
+      <h3 class="product-title">Gree Ceiling Pro 2 Ton</h3>
+      <div class="rating">★★★★★ <span class="rating-text">(4.6)</span></div>
+      <ul class="features">
+        <li class="feature-item">✓ 360° Air Flow</li>
+        <li class="feature-item">✓ Remote & App Control</li>
+      </ul>
+      <div class="price-and-action">
+        <span class="price">$990</span>
+        <a href="GG4.html"><button class="view-details-btn">View Details</button></a>
+      </div>
+      <button class="add-to-cart-btn" data-id="11" data-name="Gree Ceiling Pro 2 Ton" data-price="990" data-image="g4.jpg">
+        <i class="fas fa-cart-plus me-2"></i>Add to Cart
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- 12 -->
+<div class="col-md-6 col-lg-4 product-card-wrapper"
+  data-brand="ORIENT" data-category="Cassette Air Conditioner" data-name="Orient Cassette AC 2.5 Ton"
+  data-price="1050" data-rating="4.6">
+  <div class="product-card">
+    <div class="card-image-container">
+      <img src="o1.jpg" class="product-image" alt="Orient Cassette AC">
+      <div class="haier-badge">ORIENT</div>
+    </div>
+    <div class="card-details">
+      <h3 class="product-title">Orient Cassette AC 2.5 Ton</h3>
+      <div class="rating">★★★★★ <span class="rating-text">(4.6)</span></div>
+      <ul class="features">
+        <li class="feature-item">✓ 360° Air Flow</li>
+        <li class="feature-item">✓ Smart Control</li>
+      </ul>
+      <div class="price-and-action">
+        <span class="price">$1050</span>
+        <a href="OO3.html"><button class="view-details-btn">View Details</button></a>
+      </div>
+      <button class="add-to-cart-btn" data-id="12" data-name="Orient Cassette AC 2.5 Ton" data-price="1050" data-image="o1.jpg">
+        <i class="fas fa-cart-plus me-2"></i>Add to Cart
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- 13 -->
+<div class="col-md-6 col-lg-4 product-card-wrapper"
+  data-brand="HAIER" data-category="Cassette Air Conditioner" data-name="Haier Ceiling Cassette 3 Ton"
+  data-price="1200" data-rating="4.9">
+  <div class="product-card">
+    <div class="card-image-container">
+      <img src="h4.jpg" class="product-image" alt="Haier Ceiling Cassette">
+      <div class="haier-badge">HAIER</div>
+    </div>
+    <div class="card-details">
+      <h3 class="product-title">Haier Ceiling Cassette 3 Ton</h3>
+      <div class="rating">★★★★★ <span class="rating-text">(4.9)</span></div>
+      <ul class="features">
+        <li class="feature-item">✓ 4-Way Airflow</li>
+        <li class="feature-item">✓ Energy Efficient</li>
+      </ul>
+      <div class="price-and-action">
+        <span class="price">$1200</span>
+        <a href="HH2.html"><button class="view-details-btn">View Details</button></a>
+      </div>
+      <button class="add-to-cart-btn" data-id="13" data-name="Haier Ceiling Cassette 3 Ton" data-price="1200" data-image="h4.jpg">
+        <i class="fas fa-cart-plus me-2"></i>Add to Cart
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- 15 -->
+<div class="col-md-6 col-lg-4 product-card-wrapper"
+  data-brand="ORIENT" data-category="Portable Air Conditioner" data-name="Orient Mini Cool 0.8 Ton"
+  data-price="450" data-rating="3.9">
+  <div class="product-card">
+    <div class="card-image-container">
+      <img src="o3.jpg" class="product-image" alt="Orient Mini Cool">
+      <div class="haier-badge">ORIENT</div>
+    </div>
+    <div class="card-details">
+      <h3 class="product-title">Orient Mini Cool 0.8 Ton</h3>
+      <div class="rating">★★★☆☆ <span class="rating-text">(3.9)</span></div>
+      <ul class="features">
+        <li class="feature-item">✓ Compact Size</li>
+        <li class="feature-item">✓ USB Powered</li>
+      </ul>
+      <div class="price-and-action">
+        <span class="price">$450</span>
+        <a href="OO4.html"><button class="view-details-btn">View Details</button></a>
+      </div>
+      <button class="add-to-cart-btn" data-id="15" data-name="Orient Mini Cool 0.8 Ton" data-price="450" data-image="o3.jpg">
+        <i class="fas fa-cart-plus me-2"></i>Add to Cart
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- 16 -->
+<div class="col-md-6 col-lg-4 product-card-wrapper"
+  data-brand="DAWLANCE" data-category="Floor Mounted Air Conditioner" data-name="Dawlance Floor Mount 2 Ton"
+  data-price="950" data-rating="4.7">
+  <div class="product-card">
+    <div class="card-image-container">
+      <img src="d4.png" class="product-image" alt="Dawlance Floor Mount">
+      <div class="haier-badge">DAWLANCE</div>
+    </div>
+    <div class="card-details">
+      <h3 class="product-title">Dawlance Floor Mount 2 Ton</h3>
+      <div class="rating">★★★★★ <span class="rating-text">(4.7)</span></div>
+      <ul class="features">
+        <li class="feature-item">✓ Dual Fan Cooling</li>
+        <li class="feature-item">✓ Remote Function</li>
+      </ul>
+      <div class="price-and-action">
+        <span class="price">$950</span>
+        <a href="DD3.html"><button class="view-details-btn">View Details</button></a>
+      </div>
+      <button class="add-to-cart-btn" data-id="16" data-name="Dawlance Floor Mount 2 Ton" data-price="950" data-image="d4.png">
+        <i class="fas fa-cart-plus me-2"></i>Add to Cart
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- 17-->
+<div class="col-md-6 col-lg-4 product-card-wrapper"
+  data-brand="KENWOOD" data-category="Portable Air Conditioner" data-name="Kenwood MoveCool"
+  data-price="590" data-rating="4.1">
+  <div class="product-card">
+    <div class="card-image-container">
+      <img src="k6.jpg" class="product-image" alt="Kenwood MoveCool">
+      <div class="haier-badge">KENWOOD</div>
+    </div>
+    <div class="card-details">
+      <h3 class="product-title">Kenwood MoveCool</h3>
+      <div class="rating">★★★★☆ <span class="rating-text">(4.1)</span></div>
+      <ul class="features">
+        <li class="feature-item">✓ Easy to Move</li>
+        <li class="feature-item">✓ LED Display</li>
+      </ul>
+      <div class="price-and-action">
+        <span class="price">$590</span>
+        <a href="KK3.html"><button class="view-details-btn">View Details</button></a>
+      </div>
+      <button class="add-to-cart-btn" data-id="17" data-name="Kenwood MoveCool" data-price="590" data-image="k6.jpg">
+        <i class="fas fa-cart-plus me-2"></i>Add to Cart
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- 18 -->
+<div class="col-md-6 col-lg-4 product-card-wrapper"
+  data-brand="HAIER" data-category="Portable Air Conditioner" data-name="Haier Portable AC 1 Ton"
+  data-price="520" data-rating="4.0">
+  <div class="product-card">
+    <div class="card-image-container">
+      <img src="h1.jpg" class="product-image" alt="Haier Portable AC">
+      <div class="haier-badge">HAIER</div>
+    </div>
+    <div class="card-details">
+      <h3 class="product-title">Haier Portable AC 1 Ton</h3>
+      <div class="rating">★★★★☆ <span class="rating-text">(4.0)</span></div>
+      <ul class="features">
+        <li class="feature-item">✓ Easy to Move</li>
+        <li class="feature-item">✓ Low Noise Operation</li>
+      </ul>
+      <div class="price-and-action">
+        <span class="price">$520</span>
+        <a href="HH3.html"><button class="view-details-btn">View Details</button></a>
+      </div>
+      <button class="add-to-cart-btn" data-id="18" data-name="Haier Portable AC 1 Ton" data-price="520" data-image="h1.jpg">
+        <i class="fas fa-cart-plus me-2"></i>Add to Cart
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- 19 -->
+<div class="col-md-6 col-lg-4 product-card-wrapper"
+  data-brand="HAIER" data-category="Floor Mounted Air Conditioner" data-name="Haier Floor Mounted 2 Ton"
+  data-price="970" data-rating="4.4">
+  <div class="product-card">
+    <div class="card-image-container">
+      <img src="h2.jpeg" class="product-image" alt="Haier Floor Mounted">
+      <div class="haier-badge">HAIER</div>
+    </div>
+    <div class="card-details">
+      <h3 class="product-title">Haier Floor Mounted 2 Ton</h3>
+      <div class="rating">★★★★☆ <span class="rating-text">(4.4)</span></div>
+      <ul class="features">
+        <li class="feature-item">✓ Dual Air Vents</li>
+        <li class="feature-item">✓ Fast Cooling Mode</li>
+      </ul>
+      <div class="price-and-action">
+        <span class="price">$970</span>
+        <a href="HH4.html"><button class="view-details-btn">View Details</button></a>
+      </div>
+      <button class="add-to-cart-btn" data-id="19" data-name="Haier Floor Mounted 2 Ton" data-price="970" data-image="h2.jpeg">
+        <i class="fas fa-cart-plus me-2"></i>Add to Cart
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- 20 -->
+<div class="col-md-6 col-lg-4 product-card-wrapper"
+  data-brand="DAWLANCE" data-category="Portable Air Conditioner" data-name="Dawlance Portable Cool Pro"
+  data-price="580" data-rating="4.3">
+  <div class="product-card">
+    <div class="card-image-container">
+      <img src="d(2).webp" class="product-image" alt="Dawlance Portable Cool Pro">
+      <div class="haier-badge">DAWLANCE</div>
+    </div>
+    <div class="card-details">
+      <h3 class="product-title">Dawlance Portable Cool Pro</h3>
+      <div class="rating">★★★★☆ <span class="rating-text">(4.3)</span></div>
+      <ul class="features">
+        <li class="feature-item">✓ Remote Control</li>
+        <li class="feature-item">✓ Dehumidifier Mode</li>
+      </ul>
+      <div class="price-and-action">
+        <span class="price">$580</span>
+        <a href="DD4.html"><button class="view-details-btn">View Details</button></a>
+      </div>
+      <button class="add-to-cart-btn" data-id="20" data-name="Dawlance Portable Cool Pro" data-price="580" data-image="d(2).webp">
+        <i class="fas fa-cart-plus me-2"></i>Add to Cart
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- 21 -->
+<div class="col-md-6 col-lg-4 product-card-wrapper"
+  data-brand="KENWOOD" data-category="Portable Air Conditioner" data-name="Kenwood MoveCool"
+  data-price="590" data-rating="4.1">
+  <div class="product-card">
+    <div class="card-image-container">
+      <img src="k5.png" class="product-image" alt="Kenwood MoveCool">
+      <div class="haier-badge">KENWOOD</div>
+    </div>
+    <div class="card-details">
+      <h3 class="product-title">Kenwood MoveCool</h3>
+      <div class="rating">★★★★☆ <span class="rating-text">(4.1)</span></div>
+      <ul class="features">
+        <li class="feature-item">✓ Easy to Move</li>
+        <li class="feature-item">✓ LED Display</li>
+      </ul>
+      <div class="price-and-action">
+        <span class="price">$590</span>
+        <a href="KK6.html"><button class="view-details-btn">View Details</button></a>
+      </div>
+      <button class="add-to-cart-btn" data-id="21" data-name="Kenwood MoveCool" data-price="590" data-image="k5.png">
+        <i class="fas fa-cart-plus me-2"></i>Add to Cart
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- 22 -->
+<div class="col-md-6 col-lg-4 product-card-wrapper"
+  data-brand="KENWOOD" data-category="Portable Air Conditioner" data-name="Kenwood MoveCool"
+  data-price="590" data-rating="4.1">
+  <div class="product-card">
+    <div class="card-image-container">
+      <img src="k4.jpg" class="product-image" alt="Kenwood MoveCool">
+      <div class="haier-badge">KENWOOD</div>
+    </div>
+    <div class="card-details">
+      <h3 class="product-title">Kenwood MoveCool</h3>
+      <div class="rating">★★★★☆ <span class="rating-text">(4.1)</span></div>
+      <ul class="features">
+        <li class="feature-item">✓ Easy to Move</li>
+      </ul>
+      <div class="price-and-action">
+        <span class="price">$590</span>
+        <a href="KK5.html"><button class="view-details-btn">View Details</button></a>
+      </div>
+      <button class="add-to-cart-btn" data-id="22" data-name="Kenwood MoveCool" data-price="590" data-image="k4.jpg">
+        <i class="fas fa-cart-plus me-2"></i>Add to Cart
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- 23 -->
+<div class="col-md-6 col-lg-4 product-card-wrapper"
+  data-brand="DAWLANCE" data-category="Central Air Conditioner" data-name="Dawlance Central Air 3 Ton"
+  data-price="1320" data-rating="5.0">
+  <div class="product-card">
+    <div class="card-image-container">
+      <img src="d5.png" class="product-image" alt="Dawlance Central Air">
+      <div class="haier-badge">DAWLANCE</div>
+    </div>
+    <div class="card-details">
+      <h3 class="product-title">Dawlance Central Air 3 Ton</h3>
+      <div class="rating">★★★★★ <span class="rating-text">(5.0)</span></div>
+      <ul class="features">
+        <li class="feature-item">✓ Whole Home Cooling</li>
+        <li class="feature-item">✓ Smart Thermostat</li>
+      </ul>
+      <div class="price-and-action">
+        <span class="price">$1320</span>
+        <a href="DD5.html"><button class="view-details-btn">View Details</button></a>
+      </div>
+      <button class="add-to-cart-btn" data-id="23" data-name="Dawlance Central Air 3 Ton" data-price="1320" data-image="d5.png">
+        <i class="fas fa-cart-plus me-2"></i>Add to Cart
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- 24 -->
+<div class="col-md-6 col-lg-4 product-card-wrapper"
+  data-brand="KENWOOD" data-category="Central Air Conditioner" data-name="Kenwood Central Cooling 3 Ton"
+  data-price="1290" data-rating="4.9">
+  <div class="product-card">
+    <div class="card-image-container">
+      <img src="k2.jpg" class="product-image" alt="Kenwood Central Cooling">
+      <div class="haier-badge">KENWOOD</div>
+    </div>
+    <div class="card-details">
+      <h3 class="product-title">Kenwood Central Cooling 3 Ton</h3>
+      <div class="rating">★★★★★ <span class="rating-text">(4.9)</span></div>
+      <ul class="features">
+        <li class="feature-item">✓ Central Duct System</li>
+        <li class="feature-item">✓ Heavy-Duty Compressor</li>
+      </ul>
+      <div class="price-and-action">
+        <span class="price">$1290</span>
+        <a href="KK4.html"><button class="view-details-btn">View Details</button></a>
+      </div>
+      <button class="add-to-cart-btn" data-id="24" data-name="Kenwood Central Cooling 3 Ton" data-price="1290" data-image="k2.jpg">
+        <i class="fas fa-cart-plus me-2"></i>Add to Cart
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- 25 -->
+<div class="col-md-6 col-lg-4 product-card-wrapper"
+  data-brand="GREE" data-category="Portable Air Conditioner" data-name="Gree Mobile Comfort 1.2 Ton"
+  data-price="610" data-rating="4.3">
+  <div class="product-card">
+    <div class="card-image-container">
+      <img src="g5.jpg" class="product-image" alt="Gree Mobile Comfort">
+      <div class="haier-badge">GREE</div>
+    </div>
+    <div class="card-details">
+      <h3 class="product-title">Gree Mobile Comfort 1.2 Ton</h3>
+      <div class="rating">★★★★☆ <span class="rating-text">(4.3)</span></div>
+      <ul class="features">
+        <li class="feature-item">✓ Auto Swing</li>
+        <li class="feature-item">✓ Energy Saver</li>
+      </ul>
+      <div class="price-and-action">
+        <span class="price">$610</span>
+        <a href="GG5.html"><button class="view-details-btn">View Details</button></a>
+      </div>
+      <button class="add-to-cart-btn" data-id="25" data-name="Gree Mobile Comfort 1.2 Ton" data-price="610" data-image="g5.jpg">
+        <i class="fas fa-cart-plus me-2"></i>Add to Cart
+      </button>
+    </div>
+  </div>
+</div>
+
+</div>
+    </div>
+  </div>
+</section>
+
+<!-- Product Modal -->
+<div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title" id="productModalLabel">Product Details</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <img id="modalImage" src="" class="img-fluid rounded mb-3" alt="">
+        <h5 id="modalTitle"></h5>
+        <p id="modalFeatures" class="text-muted"></p>
+        <p class="fw-bold">Price: <span id="modalPrice" class="text-success"></span></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Cart Sidebar -->
+<div class="cart-sidebar" id="cartSidebar">
+  <div class="p-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h4 class="m-0">Your Cart</h4>
+      <button class="btn" id="closeCart">
+        <i class="fas fa-times fa-lg"></i>
+      </button>
+    </div>
+    
+    <div id="cartItems">
+      <!-- Cart items will be dynamically added here -->
+      <div class="empty-cart">
+        <i class="fas fa-shopping-cart"></i>
+        <p>Your cart is empty</p>
+      </div>
+    </div>
+    
+    <div class="cart-summary">
+      <div class="d-flex justify-content-between mb-2">
+        <span>Subtotal:</span>
+        <span id="cartSubtotal">$0.00</span>
+      </div>
+      <div class="d-flex justify-content-between mb-3">
+        <span>Shipping:</span>
+        <span id="cartShipping">$0.00</span>
+      </div>
+      <div class="d-flex justify-content-between fw-bold mb-3">
+        <span>Total:</span>
+        <span id="cartTotal">$0.00</span>
+      </div>
+      <a href="Chackout.html" style="text-decoration: none;"><button class="btn btn-primary w-100" id="checkoutBtn" disabled>Proceed to Checkout</button></a>
+    </div>
+  </div>
+</div>
+
+<!-- Overlay -->
+<div class="cart-overlay" id="cartOverlay"></div>
+
+  <!-- Footer -->
+  <footer id="contact" class="bg-dark text-light py-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-4 mb-4">
+          <h4 class="fw-bold mb-3">COSY AIRCONDITIONERS</h4>
+          <p>Your trusted partner for premium air conditioning solutions for residential and commercial growth.</p>
+          <div class="mt-4">
+            <a href="https://www.facebook.com/" class="text-light me-3"><i class="fab fa-facebook fa-2x"></i></a>
+            <a href="https://x.com/" class="text-light me-3"><i class="fab fa-twitter fa-2x"></i></a>
+            <a href="https://www.instagram.com/accounts/login/?hl=en" class="text-light me-3"><i class="fab fa-instagram fa-2x"></i></a>
+            <a href="https://pk.linkedin.com/" class="text-light"><i class="fab fa-linkedin fa-2x"></i></a>
+          </div>
+        </div>
+        <div class="col-lg-4 mb-4">
+          <h6 class="fw-bold mb-3">QUICK LINKS</h6>
+          <ul class="list-unstyled">
+            <li class="mb-2"><a href="index.html" class="text-light text-decoration-none"><i
+                  class="fas fa-chevron-right me-2"></i>Home</a></li>
+            <li class="mb-2"><a href="Products.html" class="text-light text-decoration-none"><i
+                  class="fas fa-chevron-right me-2"></i>Products</a></li>
+            <li class="mb-2"><a href="Brand.html" class="text-light text-decoration-none"><i
+                  class="fas fa-chevron-right me-2"></i>Brands</a></li>
+            <li class="mb-2"><a href="Compare.html" class="text-light text-decoration-none"><i
+                  class="fas fa-chevron-right me-2"></i>Compare</a></li>
+            <li class="mb-2"><a href="About.HTML" class="text-light text-decoration-none"><i
+                  class="fas fa-chevron-right me-2"></i>About Us</a></li>
+            <li class="mb-2"><a href="Contact.html" class="text-light text-decoration-none"><i
+                  class="fas fa-chevron-right me-2"></i>Contact</a></li>
+          </ul>
+        </div>
+        <div class="col-lg-4 mb-4">
+          <h6 class="fw-bold mb-3">CONTACT INFO</h6>
+          <p><i class="fas fa-phone me-2"></i> +21 001 32 2021</p>
+          <p><i class="fas fa-envelope me-2"></i> info@cosy.com</p>
+          <p><i class="fas fa-globe me-2"></i> www.cosy.com</p>
+          <p><i class="fas fa-map-marker-alt me-2"></i> 123 Cooling Street, Comfort City</p>
+        </div>
+      </div>
+      <hr class="my-4">
+      <div class="text-center">
+        <p>&copy; 2023 COSY Air Conditioners. All Rights Reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="auth-utils.js"></script>
+<script>
+    // Navbar scroll effect
+    window.addEventListener('scroll', function () {
+        if (window.scrollY > 50) {
+            document.querySelector('.navbar').classList.add('scrolled');
+        } else {
+            document.querySelector('.navbar').classList.remove('scrolled');
+        }
+    });
+
+    // --- FILTER FUNCTIONALITY ---
+    const searchInput = document.getElementById('searchInput');
+    const categoryFilter = document.getElementById('categoryFilter');
+    const brandFilter = document.getElementById('brandFilter');
+    const sortFilter = document.getElementById('sortFilter');
+    const productCards = document.querySelectorAll('.product-card-wrapper');
+
+    function filterProducts() {
+        const searchText = searchInput.value.toLowerCase();
+        const category = categoryFilter.value;
+        const brand = brandFilter.value;
+
+        productCards.forEach(card => {
+            const name = card.dataset.name.toLowerCase();
+            const matchSearch = name.includes(searchText);
+            const matchCategory = !category || card.dataset.category === category;
+            const matchBrand = !brand || card.dataset.brand === brand;
+
+            if (matchSearch && matchCategory && matchBrand) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
+
+    [searchInput, categoryFilter, brandFilter].forEach(el => el.addEventListener('input', filterProducts));
+
+    // --- SORTING FUNCTIONALITY ---
+    sortFilter.addEventListener('change', () => {
+        const sortValue = sortFilter.value;
+        const grid = document.getElementById('productGrid');
+        const cardsArray = Array.from(productCards).filter(c => c.style.display !== 'none');
+
+        cardsArray.sort((a, b) => {
+            if (sortValue === 'price') return a.dataset.price - b.dataset.price;
+            if (sortValue === 'rating') return b.dataset.rating - a.dataset.rating;
+            if (sortValue === 'name') return a.dataset.name.localeCompare(b.dataset.name);
+            return 0;
+        });
+
+        grid.innerHTML = '';
+        cardsArray.forEach(card => grid.appendChild(card));
+    });
+
+    // --- VIEW DETAILS MODAL FUNCTIONALITY ---
+    document.querySelectorAll('.view-details-btn').forEach(btn => {
+        btn.addEventListener('click', e => {
+            const card = e.target.closest('.product-card-wrapper');
+            document.getElementById('modalTitle').innerText = card.dataset.name;
+            document.getElementById('modalImage').src = card.querySelector('.product-image').src;
+            document.getElementById('modalPrice').innerText = '$' + card.dataset.price;
+            document.getElementById('modalFeatures').innerText = card.querySelector('.features').innerText;
+        });
+    });
+
+    // --- CART FUNCTIONALITY ---
+    // Load cart from localStorage on page load
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    
+    // DOM Elements
+    const cartSidebar = document.getElementById('cartSidebar');
+    const cartOverlay = document.getElementById('cartOverlay');
+    const cartToggle = document.getElementById('cartToggle');
+    const closeCart = document.getElementById('closeCart');
+    const dropdownCart = document.getElementById('dropdownCart');
+    const cartItems = document.getElementById('cartItems');
+    const cartCount = document.getElementById('cartCount');
+    const cartSubtotal = document.getElementById('cartSubtotal');
+    const cartShipping = document.getElementById('cartShipping');
+    const cartTotal = document.getElementById('cartTotal');
+    const checkoutBtn = document.getElementById('checkoutBtn');
+    const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
+    
+    // Save cart to localStorage
+    function saveCartToStorage() {
+        localStorage.setItem('cart', JSON.stringify(cart));
+    }
+    
+    // Open cart function
+    function openCart() {
+        cartSidebar.classList.add('open');
+        cartOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+    
+    // Close cart function
+    function closeCartSidebar() {
+        cartSidebar.classList.remove('open');
+        cartOverlay.classList.remove('active');
+        document.body.style.overflow = 'auto';
+    }
+    
+    // Open cart when cart button is clicked
+    cartToggle.addEventListener('click', openCart);
+    
+    // Open cart when dropdown cart link is clicked
+    dropdownCart.addEventListener('click', function(e) {
+        e.preventDefault();
+        openCart();
+    });
+    
+    // Close cart
+    closeCart.addEventListener('click', closeCartSidebar);
+    cartOverlay.addEventListener('click', closeCartSidebar);
+    
+    // Add to cart functionality with login check
+    addToCartButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            // Check if user is logged in using the shared function
+            if (!isUserLoggedIn()) {
+                showCustomAlert('Please log in to add items to your cart', 'warning');
+                // Redirect to login page after a delay
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 2000);
+                return;
+            }
+            
+            const id = button.getAttribute('data-id');
+            const name = button.getAttribute('data-name');
+            const price = parseFloat(button.getAttribute('data-price'));
+            const image = button.getAttribute('data-image');
+            
+            // Check if item already exists in cart
+            const existingItem = cart.find(item => item.id === id);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    id,
+                    name,
+                    price,
+                    image,
+                    quantity: 1
+                });
+            }
+            
+            // Save to localStorage and update display
+            saveCartToStorage();
+            updateCartDisplay();
+            
+            // Automatically open cart when item is added
+            openCart();
+            
+            showCustomAlert(`${name} added to cart!`, 'success');
+        });
+    });
+    
+    // Update cart display
+    function updateCartDisplay() {
+        let totalItems = 0;
+        cart.forEach(item => {
+            totalItems += item.quantity;
+        });
+        cartCount.textContent = totalItems;
+        
+        cartItems.innerHTML = '';
+        
+        if (cart.length === 0) {
+            cartItems.innerHTML = `
+                <div class="empty-cart">
+                    <i class="fas fa-shopping-cart"></i>
+                    <p>Your cart is empty</p>
+                </div>
+            `;
+            checkoutBtn.disabled = true;
+        } else {
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                const cartItemElement = document.createElement('div');
+                cartItemElement.className = 'cart-item';
+                cartItemElement.innerHTML = `
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div class="d-flex">
+                            <img src="${item.image}" class="cart-item-img me-3" alt="${item.name}">
+                            <div>
+                                <h6 class="mb-1">${item.name}</h6>
+                                <p class="mb-1 text-muted">$${item.price.toFixed(2)}</p>
+                            </div>
+                        </div>
+                        <button class="btn btn-sm btn-outline-danger remove-item" data-id="${item.id}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mt-2">
+                        <div class="input-group quantity-control">
+                            <button class="btn btn-outline-secondary decrease-qty" data-id="${item.id}">-</button>
+                            <input type="text" class="form-control text-center item-qty" value="${item.quantity}" data-id="${item.id}">
+                            <button class="btn btn-outline-secondary increase-qty" data-id="${item.id}">+</button>
+                        </div>
+                        <span class="fw-bold">$${itemTotal.toFixed(2)}</span>
+                    </div>
+                `;
+                cartItems.appendChild(cartItemElement);
+            });
+            
+            checkoutBtn.disabled = false;
+        }
+        
+        let subtotal = 0;
+        cart.forEach(item => {
+            subtotal += item.price * item.quantity;
+        });
+        
+        const shipping = subtotal > 0 ? 15.00 : 0;
+        const total = subtotal + shipping;
+        
+        cartSubtotal.textContent = `$${subtotal.toFixed(2)}`;
+        cartShipping.textContent = `$${shipping.toFixed(2)}`;
+        cartTotal.textContent = `$${total.toFixed(2)}`;
+    }
+    
+    // Event delegation for cart item actions
+    document.addEventListener('click', (e) => {
+        // Remove item
+        if (e.target.closest('.remove-item')) {
+            const itemId = e.target.closest('.remove-item').getAttribute('data-id');
+            cart = cart.filter(item => item.id !== itemId);
+            saveCartToStorage();
+            updateCartDisplay();
+        }
+        
+        // Increase quantity
+        if (e.target.closest('.increase-qty')) {
+            const itemId = e.target.closest('.increase-qty').getAttribute('data-id');
+            const item = cart.find(item => item.id === itemId);
+            if (item) {
+                item.quantity += 1;
+                saveCartToStorage();
+                updateCartDisplay();
+            }
+        }
+        
+        // Decrease quantity
+        if (e.target.closest('.decrease-qty')) {
+            const itemId = e.target.closest('.decrease-qty').getAttribute('data-id');
+            const item = cart.find(item => item.id === itemId);
+            if (item && item.quantity > 1) {
+                item.quantity -= 1;
+                saveCartToStorage();
+                updateCartDisplay();
+            }
+        }
+    });
+    
+    // Update quantity when input changes
+    document.addEventListener('change', (e) => {
+        if (e.target.classList.contains('item-qty')) {
+            const itemId = e.target.getAttribute('data-id');
+            const newQuantity = parseInt(e.target.value);
+            const item = cart.find(item => item.id === itemId);
+            
+            if (item && newQuantity > 0) {
+                item.quantity = newQuantity;
+                saveCartToStorage();
+                updateCartDisplay();
+            } else if (item && newQuantity <= 0) {
+                cart = cart.filter(item => item.id !== itemId);
+                saveCartToStorage();
+                updateCartDisplay();
+            }
+        }
+    });
+    
+    // Checkout button - REDIRECT TO CHECKOUT PAGE
+    checkoutBtn.addEventListener('click', () => {
+        localStorage.setItem('cart', JSON.stringify(cart));
+        localStorage.setItem('cartTotal', document.getElementById('cartTotal').textContent);
+        window.location.href = 'checkout.html';
+    });
+    
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        initializeAuth(); // Initialize authentication
+        updateCartDisplay(); // Initialize cart display
+    });
+</script>
+
+</body>
+</html>

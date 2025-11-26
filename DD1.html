@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dawlance Split AC 1.5 Ton - Cosy Air Conditioners</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    .py-5 { padding-top: 5rem !important; padding-bottom: 3rem !important; }
+    .product-title { font-weight: 700; }
+    .price { font-size: 1.8rem; font-weight: 600; color: #0d9488; }
+    .key-features li { margin-bottom: 8px; }
+    .btn-custom { background: #0d9488; color: #fff; border-radius: 8px; }
+    .btn-custom:hover { background: #0b7666; }
+    .btn-outline-custom { border: 1px solid #0d9488; color: #0d9488; border-radius: 8px; }
+    .btn-outline-custom:hover { background: #0d9488; color: #fff; }
+    .specs-table th { width: 25%; background: #f3f4f6; }
+    .specs-table td, .specs-table th { padding: 12px 15px; }
+    .cart-badge {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background-color: #dc3545;
+      color: white;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .cart-item-img {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+    .empty-cart {
+      text-align: center;
+      padding: 40px 0;
+    }
+    .empty-cart i {
+      font-size: 48px;
+      color: #ccc;
+      margin-bottom: 15px;
+    }
+    .download-modal .modal-body {
+      text-align: center;
+      padding: 30px;
+    }
+    .download-icon {
+      font-size: 48px;
+      color: #0d9488;
+      margin-bottom: 20px;
+    }
+    .download-btn {
+      background: #0d9488;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .download-btn:hover {
+      background: #0b7666;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top">
+    <div class="container">
+      <a class="navbar-brand fw-bold text-primary" href="index.html">
+        <i class="fas fa-snowflake me-2"></i>COSY <span class="text-dark">Air Conditioners</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="Products.html">Products</a></li>
+          <li class="nav-item"><a class="nav-link" href="Brand.html">Brand</a></li>
+          <li class="nav-item"><a class="nav-link" href="About.html">About</a></li>
+          <li class="nav-item"><a class="nav-link" href="Compare.html">Compare</a></li>
+          <li class="nav-item"><a class="nav-link" href="Contact.html">Contact</a></li>
+          <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
+        </ul>
+        <div class="d-flex align-items-center">
+          <!-- User Dropdown (shown when logged in) -->
+          <div class="dropdown me-3" id="userDropdown" style="display: none;">
+            <button class="btn dropdown-toggle d-flex align-items-center" type="button" id="userMenu" data-bs-toggle="dropdown">
+              <i class="fas fa-user-circle me-2"></i>
+              <span id="userName">User</span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>My Profile</a></li>
+              <li><a class="dropdown-item" href="Chackout.html"><i class="fas fa-shopping-bag me-2"></i>My Orders</a></li>
+              <li><a class="dropdown-item" href=""><i class="fas fa-heart me-2"></i>Wishlist</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="signup.html" id="logoutBtn"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+            </ul>
+          </div>
+          
+          
+          
+          <!-- Cart Button -->
+          <button class="btn position-relative" id="cartToggle">
+            <i class="fas fa-shopping-cart"></i>
+            <span class="cart-badge" id="cartCount">0</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+<section class="py-5" style="margin-top: 80px;">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-md-6">
+        <img id="mainImage" src="d1.png" class="img-fluid rounded shadow-sm mb-3" alt="Dawlance Split AC 1.5 Ton">
+        <div class="d-flex gap-3">
+          <img src="d1.png" class="img-thumbnail thumb" style="width:80px; cursor:pointer;">
+          <img src="d2.png" class="img-thumbnail thumb" style="width:80px; cursor:pointer;">
+          <img src="d3.png" class="img-thumbnail thumb" style="width:80px; cursor:pointer;">
+        </div>
+      </div>
+      
+      <div class="col-md-6">
+        <span class="badge bg-success">DAWLANCE</span>
+        <h2 class="product-title mt-2">Dawlance Split AC 1.5 Ton</h2>
+        <p><i class="fa-solid fa-star text-warning"></i><i class="fa-solid fa-star text-warning"></i><i class="fa-solid fa-star text-warning"></i><i class="fa-solid fa-star text-warning"></i><i class="fa-solid fa-star-half text-warning"></i> (4.5 out of 5)</p>
+        <div class="price mb-3">$649</div>
+        
+        <h6>Key Features</h6>
+        <ul class="key-features list-unstyled">
+          <li><i class="fa fa-check text-success"></i> 1.5 Ton Capacity</li>
+          <li><i class="fa fa-check text-success"></i> Inverter Technology</li>
+          <li><i class="fa fa-check text-success"></i> Energy Efficient</li>
+          <li><i class="fa fa-check text-success"></i> Silent Operation</li>
+          <li><i class="fa fa-check text-success"></i> Auto Restart</li>
+          <li><i class="fa fa-check text-success"></i> Turbo Cooling</li>
+        </ul>
+        
+        <div class="d-flex align-items-center mb-3">
+          <label class="me-2 fw-bold">Quantity:</label>
+          <div class="input-group" style="width:120px;">
+            <button class="btn btn-outline-secondary minus-btn" type="button">-</button>
+            <input type="text" class="form-control text-center" id="qty" value="1">
+            <button class="btn btn-outline-secondary plus-btn" type="button">+</button>
+          </div>
+        </div>
+        
+        <div class="d-flex gap-3">
+          <button class="btn btn-custom px-4" id="addToCartBtn"><i class="fa fa-cart-plus me-2"></i>Add to Cart</button>
+          <button class="btn btn-outline-custom px-4" id="moreDetailsBtn" data-bs-toggle="modal" data-bs-target="#downloadModal"><i class="fa fa-file-word me-2"></i>More Details</button>
+        </div>
+        
+        <div class="mt-4">
+          <p><i class="fa fa-truck text-success me-2"></i> Free Delivery</p>
+          <p><i class="fa fa-shield-halved text-success me-2"></i> 2 Year Warranty</p>
+          <p><i class="fa fa-tools text-success me-2"></i> Professional Installation</p>
+          <p><i class="fa fa-headset text-success me-2"></i> 24/7 Support</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white rounded shadow-sm p-4 mt-5">
+      <h4 class="mb-3">Specifications</h4>
+      <table class="table specs-table">
+        <tbody>
+          <tr><th>Brand</th><td>DAWLANCE</td><th>Category</th><td>Split Air Conditioner</td></tr>
+          <tr><th>Capacity</th><td>1.5 Ton</td><th>Energy Rating</th><td>5 Star</td></tr>
+          <tr><th>Warranty</th><td>2 Years</td><th>Installation</th><td>Professional Required</td></tr>
+          <tr><th>Cooling Power</th><td>18000 BTU</td><th>Noise Level</th><td>23 dB</td></tr>
+          <tr><th>Technology</th><td>Inverter</td><th>Refrigerant</th><td>R32 Eco-Friendly</td></tr>
+          <tr><th>Special Features</th><td>Auto Restart, Turbo Cool</td><th>Remote Control</th><td>Yes</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- Download Modal -->
+<div class="modal fade download-modal" id="downloadModal" tabindex="-1" aria-labelledby="downloadModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="downloadModalLabel">Product Details Document</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="download-icon">
+          <i class="fas fa-file-word"></i>
+        </div>
+        <h4>Dawlance Split AC 1.5 Ton</h4>
+        <p class="mb-4">Complete product specifications, installation guide, and warranty information</p>
+        <button class="download-btn" id="downloadDocBtn">
+          <i class="fas fa-download me-2"></i>Download Document
+        </button>
+        <p class="mt-3 text-muted small">File: Dawlance-Split-AC-1.5-Ton.doc (2.4 MB)</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="offcanvas offcanvas-end" tabindex="-1" id="cartOffcanvas" aria-labelledby="cartOffcanvasLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="cartOffcanvasLabel">Your Shopping Cart</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <div id="cartItems">
+      <div class="empty-cart">
+        <i class="fas fa-shopping-cart"></i>
+        <p>Your cart is empty</p>
+      </div>
+    </div>
+    <div class="cart-summary mt-auto">
+      <div class="d-flex justify-content-between mb-2">
+        <span>Subtotal:</span>
+        <span id="cartSubtotal">$0.00</span>
+      </div>
+      <div class="d-flex justify-content-between mb-3">
+        <span>Shipping:</span>
+        <span id="cartShipping">$0.00</span>
+      </div>
+      <div class="d-flex justify-content-between fw-bold mb-3">
+        <span>Total:</span>
+        <span id="cartTotal">$0.00</span>
+      </div>
+      <a href="Chackout.html" style="text-decoration: none;"><button class="btn btn-custom w-100" id="checkoutBtn" disabled>Proceed to Checkout</button></a>
+    </div>
+  </div>
+</div>
+
+<footer id="contact" class="bg-dark text-light py-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4 mb-4">
+        <h4 class="fw-bold mb-3">COSY AIRCONDITIONERS</h4>
+        <p>Your trusted partner for premium air conditioning solutions for residential and commercial growth.</p>
+        <div class="mt-4">
+          <a href="#" class="text-light me-3"><i class="fab fa-facebook fa-2x"></i></a>
+          <a href="#" class="text-light me-3"><i class="fab fa-twitter fa-2x"></i></a>
+          <a href="#" class="text-light me-3"><i class="fab fa-instagram fa-2x"></i></a>
+          <a href="#" class="text-light"><i class="fab fa-linkedin fa-2x"></i></a>
+        </div>
+      </div>
+      <div class="col-lg-4 mb-4">
+        <h6 class="fw-bold mb-3">QUICK LINKS</h6>
+        <ul class="list-unstyled">
+          <li class="mb-2"><a href="Home.html" class="text-light text-decoration-none"><i class="fas fa-chevron-right me-2"></i>Home</a></li>
+          <li class="mb-2"><a href="Products.html" class="text-light text-decoration-none"><i class="fas fa-chevron-right me-2"></i>Products</a></li>
+          <li class="mb-2"><a href="Brand.html" class="text-light text-decoration-none"><i class="fas fa-chevron-right me-2"></i>Brands</a></li>
+          <li class="mb-2"><a href="Compare.html" class="text-light text-decoration-none"><i class="fas fa-chevron-right me-2"></i>Compare</a></li>
+          <li class="mb-2"><a href="About.html" class="text-light text-decoration-none"><i class="fas fa-chevron-right me-2"></i>About Us</a></li>
+          <li class="mb-2"><a href="Contact.html" class="text-light text-decoration-none"><i class="fas fa-chevron-right me-2"></i>Contact</a></li>
+        </ul>
+      </div>
+      <div class="col-lg-4 mb-4">
+        <h6 class="fw-bold mb-3">CONTACT INFO</h6>
+        <p><i class="fas fa-phone me-2"></i> +21 001 32 2021</p>
+        <p><i class="fas fa-envelope me-2"></i> info@cosy.com</p>
+        <p><i class="fas fa-globe me-2"></i> www.cosy.com</p>
+        <p><i class="fas fa-map-marker-alt me-2"></i> 123 Cooling Street, Comfort City</p>
+      </div>
+    </div>
+    <hr class="my-4">
+    <div class="text-center">
+      <p>&copy; 2023 COSY Air Conditioners. All Rights Reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    // Load cart from localStorage on page load
+  let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+  // Cart toggle functionality - FIXED VERSION (vanilla JS)
+  document.getElementById('cartToggle').addEventListener('click', function() {
+    const cartOffcanvas = new bootstrap.Offcanvas(document.getElementById('cartOffcanvas'));
+    cartOffcanvas.show();
+  });
+  // Product details
+  const currentProduct = {
+    id: 1,
+    name: "Dawlance Split AC 1.5 Ton",
+    price: 649,
+    image: "d1.png",
+    brand: "DAWLANCE"
+  };
+
+  // Thumbnail image change
+  $(".thumb").click(function(){
+    let newSrc = $(this).attr("src");
+    $("#mainImage").attr("src", newSrc);
+  });
+
+  // Quantity increment/decrement
+  $(".plus-btn").click(function(){
+    let qty = parseInt($("#qty").val());
+    $("#qty").val(qty+1);
+  });
+  
+  $(".minus-btn").click(function(){
+    let qty = parseInt($("#qty").val());
+    if(qty > 1) $("#qty").val(qty-1);
+  });
+
+  // Add to cart functionality
+  $("#addToCartBtn").click(function(){
+    const quantity = parseInt($("#qty").val());
+    const existingItemIndex = cart.findIndex(item => item.id === currentProduct.id);
+    
+    if(existingItemIndex !== -1) {
+      cart[existingItemIndex].quantity += quantity;
+    } else {
+      cart.push({ ...currentProduct, quantity: quantity });
+    }
+    
+    // Save to localStorage and update display
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateCartDisplay();
+    
+    const cartOffcanvas = new bootstrap.Offcanvas(document.getElementById('cartOffcanvas'));
+    cartOffcanvas.show();
+    
+    showToast("Dawlance Split AC 1.5 Ton added to cart!");
+  });
+
+  // Download document functionality - FIXED VERSION
+  $("#downloadDocBtn").click(function(){
+    // Create a properly formatted Word document with HTML structure
+    const content = `
+<html xmlns:o='urn:schemas-microsoft-com:office:office' 
+      xmlns:w='urn:schemas-microsoft-com:office:word' 
+      xmlns='http://www.w3.org/TR/REC-html40'>
+<head>
+  <meta charset="utf-8">
+  <title>Dawlance Split AC 1.5 Ton - Product Details</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      line-height: 1.6;
+    }
+    h1 {
+      color: #0d9488;
+      border-bottom: 2px solid #0d9488;
+      padding-bottom: 10px;
+    }
+    h2 {
+      color: #0b7666;
+      margin-top: 25px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 15px 0;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    .highlight {
+      background-color: #f9f9f9;
+      padding: 15px;
+      border-left: 4px solid #0d9488;
+      margin: 15px 0;
+    }
+    ul {
+      padding-left: 20px;
+    }
+    li {
+      margin-bottom: 8px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Dawlance Split AC 1.5 Ton - Complete Product Details</h1>
+  
+  <div class="highlight">
+    <p><strong>Product Overview:</strong> The Dawlance Split AC 1.5 Ton is designed for medium to large rooms, providing efficient cooling with advanced inverter technology.</p>
+  </div>
+  
+  <h2>Key Specifications</h2>
+  <table>
+    <tr><th>Capacity</th><td>1.5 Ton</td></tr>
+    <tr><th>Cooling Power</th><td>18000 BTU</td></tr>
+    <tr><th>Energy Rating</th><td>5 Star</td></tr>
+    <tr><th>Noise Level</th><td>23 dB</td></tr>
+    <tr><th>Technology</th><td>Inverter</td></tr>
+    <tr><th>Refrigerant</th><td>R32 Eco-Friendly</td></tr>
+    <tr><th>Warranty</th><td>2 Years</td></tr>
+  </table>
+  
+  <h2>Advanced Features</h2>
+  <ul>
+    <li>Auto Restart Function - Resumes previous settings after power outage</li>
+    <li>Turbo Cooling Mode - Cools room quickly in extreme heat</li>
+    <li>Silent Operation - As low as 23 dB for peaceful environment</li>
+    <li>Energy Efficient - 5 Star Energy Rating saves up to 40% energy</li>
+    <li>Professional Installation Required - Expert installation included</li>
+  </ul>
+  
+  <h2>Technical Details</h2>
+  <table>
+    <tr><th>Brand</th><td>DAWLANCE</td></tr>
+    <tr><th>Category</th><td>Split Air Conditioner</td></tr>
+    <tr><th>Installation</th><td>Professional Required</td></tr>
+    <tr><th>Remote Control</th><td>Yes</td></tr>
+    <tr><th>Special Features</th><td>Auto Restart, Turbo Cool</td></tr>
+  </table>
+  
+  <h2>Pricing & Support</h2>
+  <ul>
+    <li><strong>Price:</strong> $649</li>
+    <li>Free Delivery on all orders</li>
+    <li>24/7 Customer Support</li>
+    <li>Professional Installation Available</li>
+  </ul>
+  
+  <h2>Installation Guide</h2>
+  <p>Please refer to the installation manual provided with the unit or contact our professional installation team.</p>
+  
+  <h2>Warranty Information</h2>
+  <ul>
+    <li>2 Years Comprehensive Warranty</li>
+    <li>Free Delivery</li>
+    <li>Professional Installation Included</li>
+    <li>24/7 Customer Support</li>
+  </ul>
+  
+  <h2>Contact Information</h2>
+  <ul>
+    <li><strong>Website:</strong> www.cosy.com</li>
+    <li><strong>Phone:</strong> +21 001 32 2021</li>
+    <li><strong>Email:</strong> info@cosy.com</li>
+    <li><strong>Address:</strong> 123 Cooling Street, Comfort City</li>
+  </ul>
+  
+  <div class="highlight">
+    <p><strong>Thank you for choosing COSY Air Conditioners!</strong></p>
+  </div>
+  
+  <p><em>Document generated on: ${new Date().toLocaleDateString()}</em></p>
+</body>
+</html>
+    `;
+    
+    // Create a Blob with the content
+    const blob = new Blob([content], { type: 'application/msword' });
+    
+    // Create a download link
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'Dawlance-Split-AC-1.5-Ton.doc'; // Changed to .doc for better Word compatibility
+    
+    // Trigger the download
+    document.body.appendChild(a);
+    a.click();
+    
+    // Clean up
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    
+    // Close the modal
+    const modal = bootstrap.Modal.getInstance(document.getElementById('downloadModal'));
+    modal.hide();
+    
+    showToast("Product details document downloaded successfully!");
+  });
+
+  // Update cart display
+  function updateCartDisplay() {
+    const cartItemsContainer = $("#cartItems");
+    const cartCount = $("#cartCount");
+    const cartSubtotal = $("#cartSubtotal");
+    const cartShipping = $("#cartShipping");
+    const cartTotal = $("#cartTotal");
+    const checkoutBtn = $("#checkoutBtn");
+    
+    let totalItems = 0;
+    cart.forEach(item => { totalItems += item.quantity; });
+    cartCount.text(totalItems);
+    
+    cartItemsContainer.empty();
+    
+    if(cart.length === 0) {
+      cartItemsContainer.html(`<div class="empty-cart"><i class="fas fa-shopping-cart"></i><p>Your cart is empty</p></div>`);
+      checkoutBtn.prop('disabled', true);
+    } else {
+      cart.forEach(item => {
+        const itemTotal = item.price * item.quantity;
+        cartItemsContainer.append(`
+          <div class="cart-item mb-3 p-3 border rounded" data-id="${item.id}">
+            <div class="d-flex justify-content-between align-items-start">
+              <div class="d-flex">
+                <img src="${item.image}" class="cart-item-img me-3" alt="${item.name}">
+                <div>
+                  <h6 class="mb-1">${item.name}</h6>
+                  <p class="mb-1 text-muted">${item.brand}</p>
+                  <p class="cart-item-price mb-0">$${item.price}</p>
+                </div>
+              </div>
+              <button class="btn btn-sm btn-outline-danger remove-item" data-id="${item.id}"><i class="fas fa-trash"></i></button>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mt-2">
+              <div class="input-group cart-item-quantity" style="width:120px;">
+                <button class="btn btn-outline-secondary decrease-qty" data-id="${item.id}">-</button>
+                <input type="text" class="form-control text-center item-qty" value="${item.quantity}" data-id="${item.id}">
+                <button class="btn btn-outline-secondary increase-qty" data-id="${item.id}">+</button>
+              </div>
+              <span class="fw-bold">$${itemTotal.toFixed(2)}</span>
+            </div>
+          </div>
+        `);
+      });
+      checkoutBtn.prop('disabled', false);
+    }
+    
+    let subtotal = 0;
+    cart.forEach(item => { subtotal += item.price * item.quantity; });
+    const shipping = subtotal > 0 ? 15.00 : 0;
+    const total = subtotal + shipping;
+    
+    cartSubtotal.text(`$${subtotal.toFixed(2)}`);
+    cartShipping.text(`$${shipping.toFixed(2)}`);
+    cartTotal.text(`$${total.toFixed(2)}`);
+    
+    // Save cart to localStorage after any update
+    localStorage.setItem('cart', JSON.stringify(cart));
+  }
+
+  // Event delegation for cart item actions
+  $(document).on('click', '.remove-item', function() {
+    const itemId = parseInt($(this).data('id'));
+    cart = cart.filter(item => item.id !== itemId);
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateCartDisplay();
+  });
+
+  $(document).on('click', '.increase-qty', function() {
+    const itemId = parseInt($(this).data('id'));
+    const item = cart.find(item => item.id === itemId);
+    if(item) { 
+      item.quantity += 1; 
+      localStorage.setItem('cart', JSON.stringify(cart));
+      updateCartDisplay(); 
+    }
+  });
+
+  $(document).on('click', '.decrease-qty', function() {
+    const itemId = parseInt($(this).data('id'));
+    const item = cart.find(item => item.id === itemId);
+    if(item && item.quantity > 1) { 
+      item.quantity -= 1; 
+      localStorage.setItem('cart', JSON.stringify(cart));
+      updateCartDisplay(); 
+    }
+  });
+
+  $(document).on('change', '.item-qty', function() {
+    const itemId = parseInt($(this).data('id'));
+    const newQuantity = parseInt($(this).val());
+    const item = cart.find(item => item.id === itemId);
+    if(item && newQuantity > 0) {
+      item.quantity = newQuantity;
+      localStorage.setItem('cart', JSON.stringify(cart));
+      updateCartDisplay();
+    } else if(item && newQuantity <= 0) {
+      cart = cart.filter(item => item.id !== itemId);
+      localStorage.setItem('cart', JSON.stringify(cart));
+      updateCartDisplay();
+    }
+  });
+
+  // Checkout button
+  $("#checkoutBtn").click(function() {
+    localStorage.setItem('cartTotal', document.getElementById('cartTotal').textContent);
+    window.location.href = 'Chackout.html';
+  });
+
+  // Toast notification function
+  function showToast(message) {
+    const toast = $(`<div class="toast align-items-center text-white bg-success border-0 position-fixed" style="bottom: 20px; right: 20px; z-index: 1055;" role="alert"><div class="d-flex"><div class="toast-body">${message}</div><button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button></div></div>`);
+    $('body').append(toast);
+    const bsToast = new bootstrap.Toast(toast[0]);
+    bsToast.show();
+    toast.on('hidden.bs.toast', function() { $(this).remove(); });
+  }
+
+  // Initialize cart display on page load
+  $(document).ready(function() {
+    updateCartDisplay();
+  });
+</script>
+</body>
+</html>

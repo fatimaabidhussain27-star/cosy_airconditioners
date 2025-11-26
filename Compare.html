@@ -1,0 +1,935 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Compare Products — COSY Air Conditioners</title>
+
+  <!-- Bootstrap 5 & Font Awesome -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/js/all.min.js" crossorigin="anonymous"></script>
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="main.css">
+  <style>
+    :root {
+      --bg: #f4fbfc;
+      --card: #ffffff;
+      --muted: #6b7980;
+      --accent: #0b93d6;
+      --accent2: #0fb39a;
+      --shadow: 0 12px 30px rgba(11,43,43,0.06);
+    }
+   
+    h1 { font-size: 40px; margin: 77px 0; text-align: center; }
+    .lead { text-align: center; color: var(--muted); margin-bottom: 18px; }
+    
+    .compare-hero {
+      background:linear-gradient(90deg,#1793c8,#0db7a3 60%,#3b82f6 100%);
+      color:#fff;
+      border:12px;
+      padding: 50px 0;
+      margin:24px 0;
+    }
+    
+    .compare-hero h1 {
+      font-size: 3rem;
+      margin-bottom: 15px;
+    }
+    
+    .compare-hero p {
+      font-size: 1.2rem;
+      opacity: 0.9;
+    }
+
+    /* Selected bar */
+    .selected-bar {
+      background: var(--card);
+      border-radius: 14px;
+      padding: 14px;
+      box-shadow: var(--shadow);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+    
+    .chips { display: flex; gap: 8px; flex-wrap: wrap; }
+    
+    .chip {
+      background: #f6f9f9;
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-weight: 700;
+      color: #07313a;
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      border: 1px solid rgba(6,34,45,0.08);
+    }
+    
+    .chip button {
+      background: transparent;
+      border: 0;
+      cursor: pointer;
+      font-weight: 900;
+      color: #833;
+    }
+
+    .btn-main {
+      background: var(--accent2);
+      color: #fff;
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 0;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    /* Product grid - FIXED FOR EQUAL HEIGHT */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px;
+    }
+    
+    .card {
+      background: #fff;
+      border-radius: 18px;
+      padding: 18px;
+      border: 1px solid rgba(6,34,45,0.04);
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      height: 100%; /* Ensure all cards take full height */
+      transition: transform .18s ease, box-shadow .18s ease;
+    }
+    
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 30px 60px rgba(11,43,43,0.08);
+    }
+    
+    /* Fixed image container height */
+    .card .img {
+      border-radius: 12px;
+      height: 200px; /* Fixed height for all images */
+      overflow: hidden;
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      border: 1px solid rgba(6,34,45,0.08);
+      margin-bottom: 12px;
+    }
+    
+    .card .img img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain; /* Changed to contain to maintain aspect ratio */
+      border-radius: 12px;
+    }
+    
+    .brand-badge {
+      position: absolute;
+      right: 12px;
+      top: 12px;
+      background: linear-gradient(180deg, var(--accent), #0a8fbe);
+      color: #fff;
+      padding: 8px 12px;
+      border-radius: 12px;
+      font-weight: 900;
+      font-size: 12px;
+    }
+    
+    .fav-check {
+      position: absolute;
+      left: 12px;
+      top: 12px;
+      background: #0fb39a;
+      color: #fff;
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+    }
+
+    .price { 
+      font-weight: 900; 
+      color: var(--accent2); 
+      font-size: 17px; 
+      margin-bottom: 8px;
+    }
+    
+    /* Ensure consistent text height */
+    .card h5 {
+      font-size: 1.1rem;
+      margin-bottom: 8px;
+      min-height: 52px; /* Fixed height for titles */
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    
+    .card .text-muted {
+      margin-bottom: 12px;
+      min-height: 20px; /* Fixed height for category */
+    }
+    
+    /* Push button to bottom */
+    .card .mt-auto {
+      margin-top: auto;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 26px;
+      background: #082b31;
+      color: #fff;
+      padding: 12px 18px;
+      border-radius: 10px;
+      box-shadow: 0 18px 48px rgba(8,43,46,0.18);
+      opacity: 0;
+      pointer-events: none;
+      transition: all .22s ease;
+      z-index: 200;
+    }
+    
+    .toast.show { opacity: 1; bottom: 48px; }
+
+    /* Comparison panel */
+    .comp-head {
+      padding: 16px 18px;
+      background: linear-gradient(90deg, #19b39e, #2f8ff7);
+      color: #fff;
+      font-weight: 900;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .comp-table td, .comp-table th {
+      padding: 14px 18px;
+      border-bottom: 1px solid rgba(6,34,45,0.04);
+      text-align: center;
+      vertical-align: middle;
+    }
+    
+    .comp-table td:first-child {
+      font-weight: 800;
+      text-align: left;
+      background: #f9f9f9;
+      width: 200px;
+    }
+    
+    .comp-table img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 8px;
+      background: #ffffff;
+      border: 1px solid rgba(6,34,45,0.08);
+    }
+    
+    /* CART SIDEBAR STYLES */
+    .cart-sidebar {
+      position: fixed;
+      top: 0;
+      right: -400px;
+      width: 380px;
+      height: 100vh;
+      background-color: white;
+      box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+      transition: right 0.4s ease;
+      z-index: 1050;
+      overflow-y: auto;
+    }
+    
+    .cart-sidebar.open {
+      right: 0;
+    }
+    
+    .cart-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      z-index: 1040;
+      display: none;
+    }
+    
+    .cart-overlay.active {
+      display: block;
+    }
+    
+    .cart-badge {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background-color: #dc3545;
+      color: white;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .cart-item {
+      border-bottom: 1px solid #eee;
+      padding: 15px 0;
+    }
+    
+    .cart-item-img {
+      width: 70px;
+      height: 70px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+    
+    .quantity-control {
+      width: 120px;
+    }
+    
+    .empty-cart {
+      text-align: center;
+      padding: 40px 0;
+      color: #6c757d;
+    }
+    
+    .empty-cart i {
+      font-size: 48px;
+      margin-bottom: 15px;
+      color: #dee2e6;
+    }
+    
+    .cart-summary {
+      border-top: 1px solid #dee2e6;
+      padding-top: 15px;
+      margin-top: 15px;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .card .img {
+        height: 180px;
+      }
+      
+      .card h5 {
+        min-height: 44px;
+        font-size: 1rem;
+      }
+    }
+    
+    @media (max-width: 576px) {
+      .cart-sidebar {
+        width: 100%;
+        right: -100%;
+      }
+      
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top">
+    <div class="container">
+      <a class="navbar-brand fw-bold text-primary" href="index.html">
+        <i class="fas fa-snowflake me-2"></i>COSY <span class="text-dark">Air Conditioners</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="Products.html">Products</a></li>
+          <li class="nav-item"><a class="nav-link" href="Brand.html">Brand</a></li>
+          <li class="nav-item"><a class="nav-link" href="About.html">About</a></li>
+          <li class="nav-item"><a class="nav-link" href="Compare.html">Compare</a></li>
+          <li class="nav-item"><a class="nav-link" href="Contact.html">Contact</a></li>
+          <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
+        </ul>
+        <div class="d-flex align-items-center">
+          <!-- User Dropdown (shown when logged in) -->
+          <div class="dropdown me-3" id="userDropdown" style="display: none;">
+            <button class="btn dropdown-toggle d-flex align-items-center" type="button" id="userMenu" data-bs-toggle="dropdown">
+              <i class="fas fa-user-circle me-2"></i>
+              <span id="userName">User</span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><a class="dropdown-item" href="My Profile.html"><i class="fas fa-user me-2"></i>My Profile</a></li>
+              <li><a class="dropdown-item" href="Chackout.html"><i class="fas fa-shopping-bag me-2"></i>My Orders</a></li>
+              <li><a class="dropdown-item" href="#" id="dropdownCart"><i class="fas fa-shopping-cart me-2"></i>Cart</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="#" id="logoutBtn"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+            </ul>
+          </div>
+          
+          <!-- Cart Button -->
+          <button class="btn position-relative" id="cartToggle">
+            <i class="fas fa-shopping-cart"></i>
+            <span class="cart-badge" id="cartCount">0</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+<!-- Hero Section -->
+<section class="compare-hero">
+  <div class="container text-center">
+    <h1 class="display-5 fw-bold text-white">Compare Products</h1>
+    <p class="lead text-light">Choose the best air conditioner for your home or office — side by side.</p>
+  </div>
+</section>
+
+  <main class="container">
+    <div class="selected-bar">
+      <div class="selected-left d-flex align-items-center flex-wrap gap-2">
+        <div class="fw-bold text-muted">Selected <strong id="selected-count">0/4</strong></div>
+        <div class="chips" id="chips"></div>
+      </div>
+      <div class="d-flex gap-2 mt-2 mt-sm-0">
+        <button class="btn-main" id="compare-now">Compare Now</button>
+        <button class="btn btn-outline-secondary" id="clear-all">Clear All</button>
+      </div>
+    </div>
+
+    <div class="comparison-wrap" id="comparison-wrap" style="display:none;">
+      <div class="comparison border rounded-4 shadow-sm overflow-hidden">
+        <div class="comp-head">
+          <div>Product Comparison</div>
+          <div style="font-size:13px;opacity:0.9">Compare selected products side by side</div>
+        </div>
+        <div class="comp-body" id="comp-body"></div>
+      </div>
+    </div>
+
+    <section>
+      <div class="grid" id="product-grid"></div>
+    </section>
+  </main>
+
+  <div class="toast" id="toast">Message</div>
+
+  <!-- Cart Sidebar -->
+  <div class="cart-sidebar" id="cartSidebar">
+    <div class="p-4">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 class="m-0">Your Cart</h4>
+        <button class="btn" id="closeCart">
+          <i class="fas fa-times fa-lg"></i>
+        </button>
+      </div>
+      
+      <div id="cartItems">
+        <!-- Cart items will be dynamically added here -->
+        <div class="empty-cart">
+          <i class="fas fa-shopping-cart"></i>
+          <p>Your cart is empty</p>
+        </div>
+      </div>
+      
+      <div class="cart-summary">
+        <div class="d-flex justify-content-between mb-2">
+          <span>Subtotal:</span>
+          <span id="cartSubtotal">$0.00</span>
+        </div>
+        <div class="d-flex justify-content-between mb-3">
+          <span>Shipping:</span>
+          <span id="cartShipping">$0.00</span>
+        </div>
+        <div class="d-flex justify-content-between fw-bold mb-3">
+          <span>Total:</span>
+          <span id="cartTotal">$0.00</span>
+        </div>
+        <a href="Chackout.html" style="text-decoration: none;"><button class="btn btn-primary w-100" id="checkoutBtn" disabled>Proceed to Checkout</button></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Overlay -->
+  <div class="cart-overlay" id="cartOverlay"></div>
+
+  <!-- Footer -->
+  <footer id="contact" class="bg-dark text-light py-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-4 mb-4">
+          <h4 class="fw-bold mb-3">COSY AIRCONDITIONERS</h4>
+          <p>Your trusted partner for premium air conditioning solutions for residential and commercial growth.</p>
+          <div class="mt-4">
+            <a href="https://www.facebook.com/" class="text-light me-3"><i class="fab fa-facebook fa-2x"></i></a>
+            <a href="https://x.com/" class="text-light me-3"><i class="fab fa-twitter fa-2x"></i></a>
+            <a href="https://www.instagram.com/accounts/login/?hl=en" class="text-light me-3"><i class="fab fa-instagram fa-2x"></i></a>
+            <a href="https://pk.linkedin.com/" class="text-light"><i class="fab fa-linkedin fa-2x"></i></a>
+          </div>
+        </div>
+        <div class="col-lg-4 mb-4">
+          <h6 class="fw-bold mb-3">QUICK LINKS</h6>
+          <ul class="list-unstyled">
+            <li class="mb-2"><a href="index.html" class="text-light text-decoration-none"><i
+                  class="fas fa-chevron-right me-2"></i>Home</a></li>
+            <li class="mb-2"><a href="Products.html" class="text-light text-decoration-none"><i
+                  class="fas fa-chevron-right me-2"></i>Products</a></li>
+            <li class="mb-2"><a href="Brand.html" class="text-light text-decoration-none"><i
+                  class="fas fa-chevron-right me-2"></i>Brands</a></li>
+            <li class="mb-2"><a href="Compare.html" class="text-light text-decoration-none"><i
+                  class="fas fa-chevron-right me-2"></i>Compare</a></li>
+            <li class="mb-2"><a href="About.HTML" class="text-light text-decoration-none"><i
+                  class="fas fa-chevron-right me-2"></i>About Us</a></li>
+            <li class="mb-2"><a href="Contact.html" class="text-light text-decoration-none"><i
+                  class="fas fa-chevron-right me-2"></i>Contact</a></li>
+          </ul>
+        </div>
+        <div class="col-lg-4 mb-4">
+          <h6 class="fw-bold mb-3">CONTACT INFO</h6>
+          <p><i class="fas fa-phone me-2"></i> +21 001 32 2021</p>
+          <p><i class="fas fa-envelope me-2"></i> info@cosy.com</p>
+          <p><i class="fas fa-globe me-2"></i> www.cosy.com</p>
+          <p><i class="fas fa-map-marker-alt me-2"></i> 123 Cooling Street, Comfort City</p>
+        </div>
+      </div>
+      <hr class="my-4">
+      <div class="text-center">
+        <p>&copy; 2023 COSY Air Conditioners. All Rights Reserved.</p>
+      </div>
+    </div>
+  </footer>
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="auth-utils.js"></script>
+
+  <script>
+  const products = [
+    {id:'p1', name:'Dawlance Split AC 1.5 Ton', brand:'DAWLANCE', category:'Split AC', price:'$649', rating:'4.5/5', capacity:'1.5 Ton', energy:'4 Star', warranty:'2 Years', install:'Pro Recommended', image:'d1.png'},
+    {id:'p2', name:'Kenwood Inverter AC 2 Ton', brand:'KENWOOD', category:'Split AC', price:'$899', rating:'4.8/5', capacity:'2 Ton', energy:'5 Star', warranty:'2 Years', install:'Pro Install', image:'k1.jpeg'},
+    {id:'p3', name:'Gree Fairy Inverter AC 1 Ton', brand:'GREE', category:'Split AC', price:'$640', rating:'4.7/5', capacity:'1 Ton', energy:'5 Star', warranty:'2 Years', install:'Pro Install', image:'g2.jpg'},
+    {id:'p4', name:'Dawlance Inverter Power', brand:'DAWLANCE', category:'Split AC', price:'$690', rating:'4.6/5', capacity:'1.5 Ton', energy:'5 Star', warranty:'2 Years', install:'Pro Install', image:'d3.png'},
+    {id:'p5', name:'Gree EcoStar 1 Ton', brand:'GREE', category:'Split AC', price:'$625', rating:'4.5/5', capacity:'1 Ton', energy:'5 Star', warranty:'2 Years', install:'Pro Install', image:'g3.png'},
+    {id:'p6', name:'Haier Turbo Cool 2 Ton', brand:'HAIER', category:'Split AC', price:'$890', rating:'4.8/5', capacity:'2 Ton', energy:'5 Star', warranty:'2 Years', install:'Pro Install', image:'h3.jpg'},
+    {id:'p7', name:'Kenwood SmartCool 1.5 Ton', brand:'KENWOOD', category:'Split AC', price:'$670', rating:'4.4/5', capacity:'1.5 Ton', energy:'4 Star', warranty:'2 Years', install:'Pro Install', image:'k3.png'},
+    {id:'p8', name:'Orient Ultron 1 Ton', brand:'ORIENT', category:'Split AC', price:'$620', rating:'4.2/5', capacity:'1 Ton', energy:'4 Star', warranty:'2 Years', install:'Pro Install', image:'o4.jpg'},
+    {id:'p9', name:'Orient Window Chill 1.5 Ton', brand:'ORIENT', category:'Window AC', price:'$555', rating:'4.1/5', capacity:'1.5 Ton', energy:'4 Star', warranty:'2 Years', install:'Self Install', image:'o2.jpg'},
+    {id:'p10', name:'Gree Window AC 1 Ton', brand:'GREE', category:'Window AC', price:'$480', rating:'4.2/5', capacity:'1 Ton', energy:'4 Star', warranty:'2 Years', install:'Self Install', image:'g1.jpeg'},
+    {id:'p11', name:'Gree Ceiling Pro 2 Ton', brand:'GREE', category:'Cassette AC', price:'$990', rating:'4.6/5', capacity:'2 Ton', energy:'5 Star', warranty:'2 Years', install:'Pro Install', image:'g4.jpg'},
+    {id:'p12', name:'Orient Cassette AC 2.5 Ton', brand:'ORIENT', category:'Cassette AC', price:'$1050', rating:'4.6/5', capacity:'2.5 Ton', energy:'5 Star', warranty:'2 Years', install:'Pro Install', image:'o1.jpg'},
+    {id:'p13', name:'Haier Ceiling Cassette 3 Ton', brand:'HAIER', category:'Cassette AC', price:'$1200', rating:'4.9/5', capacity:'3 Ton', energy:'5 Star', warranty:'2 Years', install:'Pro Install', image:'h4.jpg'},
+    {id:'p14', name:'Orient Mini Cool 0.8 Ton', brand:'ORIENT', category:'Portable AC', price:'$450', rating:'3.9/5', capacity:'0.8 Ton', energy:'3 Star', warranty:'2 Years', install:'Self Install', image:'o3.jpg'},
+    {id:'p15', name:'Dawlance Floor Mount 2 Ton', brand:'DAWLANCE', category:'Floor AC', price:'$950', rating:'4.7/5', capacity:'2 Ton', energy:'5 Star', warranty:'2 Years', install:'Pro Install', image:'d4.png'},
+    {id:'p16', name:'Kenwood MoveCool', brand:'KENWOOD', category:'Portable AC', price:'$590', rating:'4.1/5', capacity:'1 Ton', energy:'4 Star', warranty:'2 Years', install:'Self Install', image:'k6.jpg'},
+    {id:'p17', name:'Haier Portable AC 1 Ton', brand:'HAIER', category:'Portable AC', price:'$520', rating:'4.0/5', capacity:'1 Ton', energy:'4 Star', warranty:'2 Years', install:'Self Install', image:'h1.jpg'},
+    {id:'p18', name:'Haier Floor Mounted 2 Ton', brand:'HAIER', category:'Floor AC', price:'$970', rating:'4.4/5', capacity:'2 Ton', energy:'5 Star', warranty:'2 Years', install:'Pro Install', image:'h2.jpeg'},
+    {id:'p19', name:'Dawlance Portable Cool Pro', brand:'DAWLANCE', category:'Portable AC', price:'$580', rating:'4.3/5', capacity:'1 Ton', energy:'4 Star', warranty:'2 Years', install:'Self Install', image:'d(2).webp'},
+    {id:'p20', name:'Kenwood MoveCool Pro', brand:'KENWOOD', category:'Portable AC', price:'$590', rating:'4.1/5', capacity:'1 Ton', energy:'4 Star', warranty:'2 Years', install:'Self Install', image:'k5.png'},
+    {id:'p21', name:'Kenwood MoveCool Plus', brand:'KENWOOD', category:'Portable AC', price:'$590', rating:'4.1/5', capacity:'1 Ton', energy:'4 Star', warranty:'2 Years', install:'Self Install', image:'k4.jpg'},
+    {id:'p22', name:'Dawlance Central Air 3 Ton', brand:'DAWLANCE', category:'Central AC', price:'$1320', rating:'5.0/5', capacity:'3 Ton', energy:'5 Star', warranty:'3 Years', install:'Pro Install', image:'d5.png'},
+    {id:'p23', name:'Kenwood Central Cooling 3 Ton', brand:'KENWOOD', category:'Central AC', price:'$1290', rating:'4.9/5', capacity:'3 Ton', energy:'5 Star', warranty:'3 Years', install:'Pro Install', image:'k2.jpg'},
+    {id:'p24', name:'Gree Mobile Comfort 1.2 Ton', brand:'GREE', category:'Portable AC', price:'$610', rating:'4.3/5', capacity:'1.2 Ton', energy:'4 Star', warranty:'2 Years', install:'Self Install', image:'g5.jpg'},
+    {id:'p25', name:'Haier Smart Inverter 1.5 Ton', brand:'HAIER', category:'Inverter AC', price:'$850', rating:'4.7/5', capacity:'1.5 Ton', energy:'5 Star', warranty:'2 Years', install:'Pro Install', image:'h5.jpg'}
+  ];
+
+  const grid = document.getElementById('product-grid');
+  const chipsEl = document.getElementById('chips');
+  const selectedCountEl = document.getElementById('selected-count');
+  const compareNowBtn = document.getElementById('compare-now');
+  const clearAllBtn = document.getElementById('clear-all');
+  const toast = document.getElementById('toast');
+  const compWrap = document.getElementById('comparison-wrap');
+  const compBody = document.getElementById('comp-body');
+  let selected = [];
+
+  // --- AUTHENTICATION FUNCTIONALITY ---
+  
+  // Show custom alert
+  function showCustomAlert(message, type = 'info') {
+      const alertDiv = document.createElement('div');
+      alertDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+      alertDiv.style.cssText = 'top: 100px; right: 20px; z-index: 1100; min-width: 300px;';
+      alertDiv.innerHTML = `
+          <div class="d-flex align-items-center">
+              <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-triangle'} me-2"></i>
+              <span>${message}</span>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      `;
+      
+      document.body.appendChild(alertDiv);
+      
+      setTimeout(() => {
+          if (alertDiv.parentNode) {
+              alertDiv.remove();
+          }
+      }, 3000);
+  }
+
+  // --- CART FUNCTIONALITY ---
+  // Load cart from localStorage on page load
+  let cart = JSON.parse(localStorage.getItem('cart')) || [];
+  
+  // DOM Elements
+  const cartSidebar = document.getElementById('cartSidebar');
+  const cartOverlay = document.getElementById('cartOverlay');
+  const cartToggle = document.getElementById('cartToggle');
+  const closeCart = document.getElementById('closeCart');
+  const dropdownCart = document.getElementById('dropdownCart');
+  const cartItems = document.getElementById('cartItems');
+  const cartCount = document.getElementById('cartCount');
+  const cartSubtotal = document.getElementById('cartSubtotal');
+  const cartShipping = document.getElementById('cartShipping');
+  const cartTotal = document.getElementById('cartTotal');
+  const checkoutBtn = document.getElementById('checkoutBtn');
+  
+  // Save cart to localStorage
+  function saveCartToStorage() {
+    localStorage.setItem('cart', JSON.stringify(cart));
+  }
+  
+  // Open cart function
+  function openCart() {
+    cartSidebar.classList.add('open');
+    cartOverlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  
+  // Close cart function
+  function closeCartSidebar() {
+    cartSidebar.classList.remove('open');
+    cartOverlay.classList.remove('active');
+    document.body.style.overflow = 'auto';
+  }
+  
+  // Open cart when cart button is clicked
+  cartToggle.addEventListener('click', openCart);
+  
+  // Open cart when dropdown cart link is clicked
+  dropdownCart.addEventListener('click', function(e) {
+    e.preventDefault();
+    openCart();
+  });
+  
+  // Close cart
+  closeCart.addEventListener('click', closeCartSidebar);
+  cartOverlay.addEventListener('click', closeCartSidebar);
+  
+  // Update cart display
+  function updateCartDisplay() {
+    let totalItems = 0;
+    cart.forEach(item => {
+      totalItems += item.quantity;
+    });
+    cartCount.textContent = totalItems;
+    
+    cartItems.innerHTML = '';
+    
+    if (cart.length === 0) {
+      cartItems.innerHTML = `
+        <div class="empty-cart">
+          <i class="fas fa-shopping-cart"></i>
+          <p>Your cart is empty</p>
+        </div>
+      `;
+      checkoutBtn.disabled = true;
+    } else {
+      cart.forEach(item => {
+        const itemTotal = item.price * item.quantity;
+        const cartItemElement = document.createElement('div');
+        cartItemElement.className = 'cart-item';
+        cartItemElement.innerHTML = `
+          <div class="d-flex justify-content-between align-items-start">
+            <div class="d-flex">
+              <img src="${item.image}" class="cart-item-img me-3" alt="${item.name}">
+              <div>
+                <h6 class="mb-1">${item.name}</h6>
+                <p class="mb-1 text-muted">$${item.price.toFixed(2)}</p>
+              </div>
+            </div>
+            <button class="btn btn-sm btn-outline-danger remove-item" data-id="${item.id}">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+          <div class="d-flex justify-content-between align-items-center mt-2">
+            <div class="input-group quantity-control">
+              <button class="btn btn-outline-secondary decrease-qty" data-id="${item.id}">-</button>
+              <input type="text" class="form-control text-center item-qty" value="${item.quantity}" data-id="${item.id}">
+              <button class="btn btn-outline-secondary increase-qty" data-id="${item.id}">+</button>
+            </div>
+            <span class="fw-bold">$${itemTotal.toFixed(2)}</span>
+          </div>
+        `;
+        cartItems.appendChild(cartItemElement);
+      });
+      
+      checkoutBtn.disabled = false;
+    }
+    
+    let subtotal = 0;
+    cart.forEach(item => {
+      subtotal += item.price * item.quantity;
+    });
+    
+    const shipping = subtotal > 0 ? 15.00 : 0;
+    const total = subtotal + shipping;
+    
+    cartSubtotal.textContent = `$${subtotal.toFixed(2)}`;
+    cartShipping.textContent = `$${shipping.toFixed(2)}`;
+    cartTotal.textContent = `$${total.toFixed(2)}`;
+  }
+  
+  // Event delegation for cart item actions
+  document.addEventListener('click', (e) => {
+    // Remove item
+    if (e.target.closest('.remove-item')) {
+      const itemId = e.target.closest('.remove-item').getAttribute('data-id');
+      cart = cart.filter(item => item.id !== itemId);
+      saveCartToStorage();
+      updateCartDisplay();
+    }
+    
+    // Increase quantity
+    if (e.target.closest('.increase-qty')) {
+      const itemId = e.target.closest('.increase-qty').getAttribute('data-id');
+      const item = cart.find(item => item.id === itemId);
+      if (item) {
+        item.quantity += 1;
+        saveCartToStorage();
+        updateCartDisplay();
+      }
+    }
+    
+    // Decrease quantity
+    if (e.target.closest('.decrease-qty')) {
+      const itemId = e.target.closest('.decrease-qty').getAttribute('data-id');
+      const item = cart.find(item => item.id === itemId);
+      if (item && item.quantity > 1) {
+        item.quantity -= 1;
+        saveCartToStorage();
+        updateCartDisplay();
+      }
+    }
+  });
+  
+  // Update quantity when input changes
+  document.addEventListener('change', (e) => {
+    if (e.target.classList.contains('item-qty')) {
+      const itemId = e.target.getAttribute('data-id');
+      const newQuantity = parseInt(e.target.value);
+      const item = cart.find(item => item.id === itemId);
+      
+      if (item && newQuantity > 0) {
+        item.quantity = newQuantity;
+        saveCartToStorage();
+        updateCartDisplay();
+      } else if (item && newQuantity <= 0) {
+        cart = cart.filter(item => item.id !== itemId);
+        saveCartToStorage();
+        updateCartDisplay();
+      }
+    }
+  });
+  
+  // Checkout button - REDIRECT TO CHECKOUT PAGE
+  checkoutBtn.addEventListener('click', () => {
+    localStorage.setItem('cart', JSON.stringify(cart));
+    localStorage.setItem('cartTotal', document.getElementById('cartTotal').textContent);
+    window.location.href = 'checkout.html';
+  });
+  
+  // --- COMPARISON FUNCTIONALITY ---
+  function renderGrid(){
+    grid.innerHTML = '';
+    products.forEach(p=>{
+      const el = document.createElement('article');
+      el.className = 'card';
+      el.innerHTML = `
+        <div class="img">
+          <div class="fav-check" id="check-${p.id}">✓</div>
+          <div class="brand-badge">${p.brand}</div>
+          <img src="${p.image}" alt="${p.name}" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><rect width=\"100\" height=\"100\" fill=\"#ffffff\"/><text x=\"50%\" y=\"50%\" dominant-baseline=\"middle\" text-anchor=\"middle\" font-size=\"10\" fill=\"#999\"></text></svg>
+        </div>
+        <div>
+          <h5>${p.name}</h5>
+          <div class="text-muted">${p.category}</div>
+          <div class="price">${p.price}</div>
+        </div>
+        <div class="d-flex gap-2 mt-auto">
+          <button class="btn-main" data-id="${p.id}">+ Compare</button>
+        </div>`;
+      grid.appendChild(el);
+      el.querySelector('button').addEventListener('click',()=>toggleSelect(p.id));
+    });
+  }
+
+  function toggleSelect(id){
+    const idx = selected.indexOf(id);
+    if(idx>=0) {
+      selected.splice(idx,1);
+    } else {
+      if(selected.length<4) {
+        selected.push(id);
+        // Show comparison alert
+        const product = products.find(p => p.id === id);
+        const selectedNames = selected.map(id => {
+          const p = products.find(p => p.id === id);
+          return p.name;
+        });
+        showToast(`Your selected products (${selectedNames.join(', ')}) have been compared successfully!`);
+      } else {
+        showToast('You can only compare up to 4 products at a time');
+      }
+    }
+    updateUI();
+  }
+
+  function updateUI(){
+    selectedCountEl.textContent = `${selected.length}/4`;
+    chipsEl.innerHTML = '';
+    selected.forEach(id=>{
+      const p = products.find(x=>x.id===id);
+      const chip=document.createElement('div');
+      chip.className='chip';
+      chip.innerHTML=`${p.name} <button data-id="${id}">×</button>`;
+      chip.querySelector('button').addEventListener('click',()=>toggleSelect(id));
+      chipsEl.appendChild(chip);
+    });
+  }
+
+  compareNowBtn.addEventListener('click',()=>{
+    if(selected.length===0)return showToast('Select at least one product');
+    buildComparison();
+    compWrap.style.display='block';
+  });
+  clearAllBtn.addEventListener('click',()=>{selected=[];updateUI();compWrap.style.display='none';});
+
+  function buildComparison(){
+    const cols=selected.map(id=>products.find(p=>p.id===id));
+    const rows=[
+      {label:'Product',key:'name'},
+      {label:'Image',key:'image',type:'image'},
+      {label:'Brand',key:'brand'},
+      {label:'Category',key:'category'},
+      {label:'Price',key:'price'},
+      {label:'Rating',key:'rating'},
+      {label:'Capacity',key:'capacity'},
+      {label:'Energy Rating',key:'energy'},
+      {label:'Warranty',key:'warranty'},
+      {label:'Installation',key:'install'}
+    ];
+    let html='<table class="table comp-table"><tbody>';
+    rows.forEach(r=>{
+      if(r.type === 'image') {
+        html+=`<tr><td>${r.label}</td>${cols.map(c=>`<td><img src="${c[r.key]}" alt="${c.name}" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><rect width=\"100\" height=\"100\" fill=\"#ffffff\"/><text x=\"50%\" y=\"50%\" dominant-baseline=\"middle\" text-anchor=\"middle\" font-size=\"10\" fill=\"#999\"></text></svg></td>`).join('')}</tr>`;
+      } else {
+        html+=`<tr><td>${r.label}</td>${cols.map(c=>`<td>${c[r.key]}</td>`).join('')}</tr>`;
+      }
+    });
+    html+='</tbody></table>';
+    compBody.innerHTML=html;
+  }
+
+  // Initialize the page
+  document.addEventListener('DOMContentLoaded', function() {
+    initializeAuth(); // Initialize authentication
+    renderGrid();
+    updateCartDisplay();
+  });
+  // auth-utils.js - Shared authentication utilities
+
+// Check if user is logged in
+function isUserLoggedIn() {
+    return localStorage.getItem('isLoggedIn') === 'true';
+}
+
+// Get current user data
+function getCurrentUser() {
+    const userData = localStorage.getItem('currentUser');
+    return userData ? JSON.parse(userData) : null;
+}
+
+// Update UI based on login status
+function updateLoginStatus() {
+    const userDropdown = document.getElementById('userDropdown');
+    const userName = document.getElementById('userName');
+    
+    if (isUserLoggedIn() && getCurrentUser()) {
+        const user = getCurrentUser();
+        if (userDropdown) userDropdown.style.display = 'block';
+        if (userName) userName.textContent = user.firstName || 'User';
+    } else {
+        if (userDropdown) userDropdown.style.display = 'none';
+    }
+}
+
+// Login function
+function login(userData) {
+    localStorage.setItem('isLoggedIn', 'true');
+    localStorage.setItem('currentUser', JSON.stringify(userData));
+    updateLoginStatus();
+}
+
+// Logout function
+function logout() {
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('currentUser');
+    updateLoginStatus();
+    window.location.href = 'login.html';
+}
+
+// Show custom alert
+function showCustomAlert(message, type = 'info') {
+    const alertDiv = document.createElement('div');
+    alertDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+    alertDiv.style.cssText = 'top: 100px; right: 20px; z-index: 1100; min-width: 300px;';
+    alertDiv.innerHTML = `
+        <div class="d-flex align-items-center">
+            <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-triangle'} me-2"></i>
+            <span>${message}</span>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    `;
+    
+    document.body.appendChild(alertDiv);
+    
+    setTimeout(() => {
+        if (alertDiv.parentNode) {
+            alertDiv.remove();
+        }
+    }, 3000);
+}
+
+// Initialize auth on page load
+function initializeAuth() {
+    updateLoginStatus();
+    
+    // Add logout event listener if logout button exists
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            logout();
+        });
+    }
+}
+</script>
+
+</body>
+</html>

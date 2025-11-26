@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Checkout - COSY Air Conditioners</title>
+
+  <!-- Bootstrap & jQuery -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link rel="stylesheet" href="main.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="auth-utils.js"></script>
+  <style>
+    .checkout-container {
+      max-width: 1100px; margin: 40px auto; background: #fff;
+      border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); padding: 40px;
+    }
+    .section-title {
+      font-weight: 600; color: #333;
+      border-bottom: 3px solid transparent;
+      background: linear-gradient(to right, #14b8a6, #2563eb);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+    .form-control:focus {
+      border-color: #14b8a6; box-shadow: 0 0 0 0.15rem rgba(20, 184, 166, 0.25);
+    }
+
+    /* Gradient button */
+    .btn-gradient {
+      background: linear-gradient(to right, #14b8a6, #2563eb);
+      color: #fff; border: none; transition: all 0.3s ease;
+    }
+    .btn-gradient:hover {
+      opacity: 0.9; transform: translateY(-1px);
+    }
+
+    /* Summary Box */
+    .summary-box {
+      background: #f0f9ff; border: 1px solid #cbd5e1; border-radius: 10px; padding: 20px;
+    }
+
+    .product-img { border-radius: 8px; max-width: 120px; }
+    .success-message {
+      display: none; background: #d1fae5; color: #065f46; padding: 20px;
+      border-radius: 8px; text-align: center; margin-top: 20px;
+    }
+
+    .payment-options label {
+      cursor: pointer;
+      padding: 10px 15px;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      display: block;
+      transition: all 0.3s ease;
+      margin-bottom: 10px;
+    }
+    .payment-options input:checked + label {
+      border-color: #2563eb;
+      background: linear-gradient(to right, #14b8a6, #2563eb);
+      color: #fff;
+    }
+    
+    /* Form validation styles */
+    .is-invalid {
+      border-color: #dc3545;
+    }
+    
+    .invalid-feedback {
+      display: none;
+      width: 100%;
+      margin-top: 0.25rem;
+      font-size: 0.875em;
+      color: #dc3545;
+    }
+    
+    .is-invalid ~ .invalid-feedback {
+      display: block;
+    }
+    
+    .is-valid {
+      border-color: #198754;
+    }
+    
+    /* Custom alert styles */
+    .custom-alert {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 1055;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      padding: 30px;
+      text-align: center;
+      max-width: 400px;
+      width: 90%;
+      display: none;
+    }
+    
+    .alert-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      z-index: 1050;
+      display: none;
+    }
+    
+    .alert-icon {
+      font-size: 48px;
+      color: #14b8a6;
+      margin-bottom: 15px;
+    }
+    
+    /* Address suggestions styles */
+    .address-suggestions {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: white;
+      border: 1px solid #dee2e6;
+      border-radius: 0 0 8px 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      z-index: 1000;
+      display: none;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    
+    .address-suggestion {
+      padding: 10px 15px;
+      border-bottom: 1px solid #f8f9fa;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    
+    .address-suggestion:hover {
+      background-color: #f8f9fa;
+    }
+    
+    .address-suggestion:last-child {
+      border-bottom: none;
+    }
+    
+    .address-suggestion .title {
+      font-weight: 600;
+      color: #14b8a6;
+      font-size: 0.9rem;
+    }
+    
+    .address-suggestion .address {
+      font-size: 0.8rem;
+      color: #6c757d;
+      white-space: pre-line;
+    }
+    
+    .address-input-container {
+      position: relative;
+    }
+    
+    /* Cart Sidebar Styles */
+    .cart-sidebar {
+      position: fixed;
+      top: 0;
+      right: -400px;
+      width: 380px;
+      height: 100vh;
+      background-color: white;
+      box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+      transition: right 0.4s ease;
+      z-index: 1050;
+      overflow-y: auto;
+    }
+    
+    .cart-sidebar.open {
+      right: 0;
+    }
+    
+    .cart-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      z-index: 1040;
+      display: none;
+    }
+    
+    .cart-overlay.active {
+      display: block;
+    }
+    
+    .cart-badge {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background-color: #dc3545;
+      color: white;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .cart-item {
+      border-bottom: 1px solid #eee;
+      padding: 15px 0;
+    }
+    
+    .cart-item-img {
+      width: 70px;
+      height: 70px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+    
+    .quantity-control {
+      width: 120px;
+    }
+    
+    .empty-cart {
+      text-align: center;
+      padding: 40px 0;
+      color: #6c757d;
+    }
+    
+    .empty-cart i {
+      font-size: 48px;
+      margin-bottom: 15px;
+      color: #dee2e6;
+    }
+    
+    .cart-summary {
+      border-top: 1px solid #dee2e6;
+      padding-top: 15px;
+      margin-top: 15px;
+    }
+    
+    @media (max-width: 576px) {
+      .cart-sidebar {
+        width: 100%;
+        right: -100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+ <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top">
+    <div class="container">
+      <a class="navbar-brand fw-bold text-primary" href="index.html">
+        <i class="fas fa-snowflake me-2"></i>COSY <span class="text-dark">Air Conditioners</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="Products.html">Products</a></li>
+          <li class="nav-item"><a class="nav-link" href="Brand.html">Brand</a></li>
+          <li class="nav-item"><a class="nav-link" href="About.html">About</a></li>
+          <li class="nav-item"><a class="nav-link" href="Compare.html">Compare</a></li>
+          <li class="nav-item"><a class="nav-link" href="Contact.html">Contact</a></li>
+          <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
+        </ul>
+        <div class="d-flex align-items-center">
+          <!-- User Dropdown (shown when logged in) -->
+          <div class="dropdown me-3" id="userDropdown" style="display: none;">
+            <button class="btn dropdown-toggle d-flex align-items-center" type="button" id="userMenu" data-bs-toggle="dropdown">
+              <i class="fas fa-user-circle me-2"></i>
+              <span id="userName">User</span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><a class="dropdown-item" href="My Profile.html"><i class="fas fa-user me-2"></i>My Profile</a></li>
+              <li><a class="dropdown-item" href="Chackout.html"><i class="fas fa-shopping-bag me-2"></i>My Orders</a></li>
+              <li><a class="dropdown-item" href=""><i class="fas fa-heart me-2"></i>Wishlist</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="signup.html" id="logoutBtn"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+            </ul>
+          </div>
+          
+          
+          
+          <!-- Cart Button -->
+          <button class="btn position-relative" id="cartToggle">
+            <i class="fas fa-shopping-cart"></i>
+            <span class="cart-badge" id="cartCount">0</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+  
+  <!-- Checkout Container -->
+  <div class="checkout-container">
+    <h3 class="section-title">Checkout</h3>
+
+    <div class="row">
+      <!-- Left Column -->
+      <div class="col-md-7">
+        <h5 class="mb-3">Delivery Information</h5>
+        <form id="checkoutForm">
+          <div class="mb-3">
+            <label class="form-label">Full Name</label>
+            <input type="text" class="form-control" id="fullName" placeholder="Enter your full name" required>
+            <div class="invalid-feedback">
+              Please enter a valid name (only letters and spaces allowed).
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Phone Number</label>
+            <input type="text" class="form-control" id="phoneNumber" placeholder="03XX-XXXXXXX" required>
+            <div class="invalid-feedback">
+              Please enter a valid phone number (e.g., 03XX-XXXXXXX).
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Email Address</label>
+            <input type="email" class="form-control" id="email" placeholder="you@example.com" required>
+            <div class="invalid-feedback">
+              Please enter a valid email address.
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Shipping Address</label>
+            <div class="address-input-container">
+              <textarea class="form-control" id="address" rows="3" placeholder="Enter your complete delivery address" required></textarea>
+              <div class="address-suggestions" id="addressSuggestions">
+                <div class="address-suggestion" data-address="John Smith&#10;House 123, Street 45&#10;Gulshan-e-Iqbal&#10;Karachi, Sindh 75300&#10;Pakistan">
+                  <div class="title"> Residential Address</div>
+                  <div class="address">John Smith
+House 123, Street 45
+Gulshan-e-Iqbal
+Karachi, Sindh 75300
+Pakistan</div>
+                </div>
+                <div class="address-suggestion" data-address="Sarah Khan&#10;Flat 501, Building B-12&#10;Block 7, Clifton&#10;Karachi, Sindh 75600&#10;Pakistan">
+                  <div class="title"> Apartment Address</div>
+                  <div class="address">Sarah Khan
+Flat 501, Building B-12
+Block 7, Clifton
+Karachi, Sindh 75600
+Pakistan</div>
+                </div>
+                <div class="address-suggestion" data-address="COSY Air Conditioners&#10;Shop 45, Commercial Area&#10;DHA Phase 5&#10;Lahore, Punjab 54000&#10;Pakistan">
+                  <div class="title"> Commercial Address</div>
+                  <div class="address">COSY Air Conditioners
+Shop 45, Commercial Area
+DHA Phase 5
+Lahore, Punjab 54000
+Pakistan</div>
+                </div>
+              </div>
+            </div>
+            <div class="invalid-feedback">
+              Please enter your complete shipping address.
+            </div>
+            <small class="text-muted">Click on the address field to see format examples</small>
+          </div>
+
+          <h5 class="mt-4 mb-3">Payment Method</h5>
+          <div class="payment-options">
+            <input class="form-check-input d-none" type="radio" name="payment" id="cod" value="cod" checked>
+            <label for="cod"> Cash on Delivery</label>
+
+            <input class="form-check-input d-none" type="radio" name="payment" id="card" value="card">
+            <label for="card"> Credit / Debit Card</label>
+
+            <input class="form-check-input d-none" type="radio" name="payment" id="easypaisa" value="easypaisa">
+            <label for="easypaisa"> EasyPaisa</label>
+
+            <input class="form-check-input d-none" type="radio" name="payment" id="jazzcash" value="jazzcash">
+            <label for="jazzcash"> JazzCash</label>
+          </div>
+
+          <button type="submit" class="btn btn-gradient w-100 py-2 mt-4" id="submitBtn">Place Order</button>
+        </form>
+
+        <div class="success-message">
+          <h5><i class="fa-solid fa-circle-check me-2"></i>Order Placed Successfully!</h5>
+          <p>Thank you for shopping with COSY Air Conditioners. Your order is being processed.</p>
+        </div>
+      </div>
+
+      <!-- Right Column -->
+      <div class="col-md-5">
+        <h5 class="mb-3">Order Summary</h5>
+        <div id="orderSummary">
+          <!-- Order items will be dynamically added here -->
+          <div class="empty-cart text-center py-4">
+            <i class="fas fa-shopping-cart fa-2x text-muted mb-3"></i>
+            <p class="text-muted">Your cart is empty</p>
+          </div>
+        </div>
+        <div class="summary-box mt-3">
+          <div class="d-flex justify-content-between mb-2"><span>Subtotal:</span><span id="orderSubtotal">$0.00</span></div>
+          <div class="d-flex justify-content-between mb-2"><span>Shipping:</span><span id="orderShipping">$0.00</span></div>
+          <hr>
+          <div class="d-flex justify-content-between"><strong>Total:</strong><strong id="orderTotal">$0.00</strong></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cart Sidebar -->
+  <div class="cart-sidebar" id="cartSidebar">
+    <div class="p-4">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 class="m-0">Your Cart</h4>
+        <button class="btn" id="closeCart">
+          <i class="fas fa-times fa-lg"></i>
+        </button>
+      </div>
+      
+      <div id="cartItems">
+        <!-- Cart items will be dynamically added here -->
+        <div class="empty-cart">
+          <i class="fas fa-shopping-cart"></i>
+          <p>Your cart is empty</p>
+        </div>
+      </div>
+      
+      <div class="cart-summary">
+        <div class="d-flex justify-content-between mb-2">
+          <span>Subtotal:</span>
+          <span id="cartSubtotal">$0.00</span>
+        </div>
+        <div class="d-flex justify-content-between mb-3">
+          <span>Shipping:</span>
+          <span id="cartShipping">$0.00</span>
+        </div>
+        <div class="d-flex justify-content-between fw-bold mb-3">
+          <span>Total:</span>
+          <span id="cartTotal">$0.00</span>
+        </div>
+        <a href="Checkout.html" style="text-decoration: none;"><button class="btn btn-primary w-100" id="checkoutBtn" disabled>Proceed to Checkout</button></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Overlay -->
+  <div class="cart-overlay" id="cartOverlay"></div>
+
+  <!-- Custom Alert -->
+  <div class="custom-alert" id="orderSuccessAlert">
+    <div class="alert-icon">
+      <i class="fas fa-check-circle"></i>
+    </div>
+    <h4 class="mb-3">Order Placed Successfully!</h4>
+    <p class="mb-4">Thank you for shopping with COSY Air Conditioners. Your order is being processed.</p>
+    <button class="btn btn-gradient" id="closeAlert">Continue Shopping</button>
+  </div>
+  
+  <!-- Alert Overlay -->
+  <div class="alert-overlay" id="alertOverlay"></div>
+
+ <!-- Footer -->
+  <footer id="contact" class="bg-dark text-light py-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-4 mb-4">
+          <h4 class="fw-bold mb-3">COSY AIRCONDITIONERS</h4>
+          <p>Your trusted partner for premium air conditioning solutions for residential and commercial growth.</p>
+          <div class="mt-4">
+            <a href="https://www.facebook.com/" class="text-light me-3"><i class="fab fa-facebook fa-2x"></i></a>
+            <a href="https://x.com/" class="text-light me-3"><i class="fab fa-twitter fa-2x"></i></a>
+            <a href="https://www.instagram.com/accounts/login/?hl=en" class="text-light me-3"><i class="fab fa-instagram fa-2x"></i></a>
+            <a href="https://pk.linkedin.com/" class="text-light"><i class="fab fa-linkedin fa-2x"></i></a>
+          </div>
+        </div>
+        <div class="col-lg-4 mb-4">
+          <h6 class="fw-bold mb-3">QUICK LINKS</h6>
+          <ul class="list-unstyled">
+            <li class="mb-2"><a href="index.html" class="text-light text-decoration-none"><i
+                  class="fas fa-chevron-right me-2"></i>Home</a></li>
+            <li class="mb-2"><a href="Products.html" class="text-light text-decoration-none"><i
+                  class="fas fa-chevron-right me-2"></i>Products</a></li>
+            <li class="mb-2"><a href="Brand.html" class="text-light text-decoration-none"><i
+                  class="fas fa-chevron-right me-2"></i>Brands</a></li>
+            <li class="mb-2"><a href="Compare.html" class="text-light text-decoration-none"><i
+                  class="fas fa-chevron-right me-2"></i>Compare</a></li>
+            <li class="mb-2"><a href="About.HTML" class="text-light text-decoration-none"><i
+                  class="fas fa-chevron-right me-2"></i>About Us</a></li>
+            <li class="mb-2"><a href="Contact.html" class="text-light text-decoration-none"><i
+                  class="fas fa-chevron-right me-2"></i>Contact</a></li>
+          </ul>
+        </div>
+        <div class="col-lg-4 mb-4">
+          <h6 class="fw-bold mb-3">CONTACT INFO</h6>
+          <p><i class="fas fa-phone me-2"></i> +21 001 32 2021</p>
+          <p><i class="fas fa-envelope me-2"></i> info@cosy.com</p>
+          <p><i class="fas fa-globe me-2"></i> www.cosy.com</p>
+          <p><i class="fas fa-map-marker-alt me-2"></i> 123 Cooling Street, Comfort City</p>
+        </div>
+      </div>
+      <hr class="my-4">
+      <div class="text-center">
+        <p>&copy; 2023 COSY Air Conditioners. All Rights Reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Form Validation and Submission Script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // --- CART FUNCTIONALITY ---
+      // Load cart from localStorage
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+      
+      // DOM Elements for cart
+      const cartSidebar = document.getElementById('cartSidebar');
+      const cartOverlay = document.getElementById('cartOverlay');
+      const cartToggle = document.getElementById('cartToggle');
+      const closeCart = document.getElementById('closeCart');
+      const cartItems = document.getElementById('cartItems');
+      const cartCount = document.getElementById('cartCount');
+      const cartSubtotal = document.getElementById('cartSubtotal');
+      const cartShipping = document.getElementById('cartShipping');
+      const cartTotal = document.getElementById('cartTotal');
+      const checkoutBtn = document.getElementById('checkoutBtn');
+      
+      // Save cart to localStorage
+      function saveCartToStorage() {
+        localStorage.setItem('cart', JSON.stringify(cart));
+      }
+      
+      // Open cart
+      cartToggle.addEventListener('click', () => {
+        cartSidebar.classList.add('open');
+        cartOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      });
+      
+      // Close cart
+      closeCart.addEventListener('click', closeCartSidebar);
+      cartOverlay.addEventListener('click', closeCartSidebar);
+      
+      function closeCartSidebar() {
+        cartSidebar.classList.remove('open');
+        cartOverlay.classList.remove('active');
+        document.body.style.overflow = 'auto';
+      }
+      
+      // Update cart display
+      function updateCartDisplay() {
+        let totalItems = 0;
+        cart.forEach(item => {
+          totalItems += item.quantity;
+        });
+        cartCount.textContent = totalItems;
+        
+        cartItems.innerHTML = '';
+        
+        if (cart.length === 0) {
+          cartItems.innerHTML = `
+            <div class="empty-cart">
+              <i class="fas fa-shopping-cart"></i>
+              <p>Your cart is empty</p>
+            </div>
+          `;
+          checkoutBtn.disabled = true;
+        } else {
+          cart.forEach(item => {
+            const itemTotal = item.price * item.quantity;
+            const cartItemElement = document.createElement('div');
+            cartItemElement.className = 'cart-item';
+            cartItemElement.innerHTML = `
+              <div class="d-flex justify-content-between align-items-start">
+                <div class="d-flex">
+                  <img src="${item.image}" class="cart-item-img me-3" alt="${item.name}">
+                  <div>
+                    <h6 class="mb-1">${item.name}</h6>
+                    <p class="mb-1 text-muted">$${item.price.toFixed(2)}</p>
+                  </div>
+                </div>
+                <button class="btn btn-sm btn-outline-danger remove-item" data-id="${item.id}">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+              <div class="d-flex justify-content-between align-items-center mt-2">
+                <div class="input-group quantity-control">
+                  <button class="btn btn-outline-secondary decrease-qty" data-id="${item.id}">-</button>
+                  <input type="text" class="form-control text-center item-qty" value="${item.quantity}" data-id="${item.id}">
+                  <button class="btn btn-outline-secondary increase-qty" data-id="${item.id}">+</button>
+                </div>
+                <span class="fw-bold">$${itemTotal.toFixed(2)}</span>
+              </div>
+            `;
+            cartItems.appendChild(cartItemElement);
+          });
+          
+          checkoutBtn.disabled = false;
+        }
+        
+        let subtotal = 0;
+        cart.forEach(item => {
+          subtotal += item.price * item.quantity;
+        });
+        
+        const shipping = subtotal > 0 ? 15.00 : 0;
+        const total = subtotal + shipping;
+        
+        cartSubtotal.textContent = `$${subtotal.toFixed(2)}`;
+        cartShipping.textContent = `$${shipping.toFixed(2)}`;
+        cartTotal.textContent = `$${total.toFixed(2)}`;
+        
+        // Also update the order summary
+        updateOrderSummary();
+      }
+      
+      // Event delegation for cart item actions
+      document.addEventListener('click', (e) => {
+        // Remove item
+        if (e.target.closest('.remove-item')) {
+          const itemId = e.target.closest('.remove-item').getAttribute('data-id');
+          cart = cart.filter(item => item.id !== itemId);
+          saveCartToStorage();
+          updateCartDisplay();
+        }
+        
+        // Increase quantity
+        if (e.target.closest('.increase-qty')) {
+          const itemId = e.target.closest('.increase-qty').getAttribute('data-id');
+          const item = cart.find(item => item.id === itemId);
+          if (item) {
+            item.quantity += 1;
+            saveCartToStorage();
+            updateCartDisplay();
+          }
+        }
+        
+        // Decrease quantity
+        if (e.target.closest('.decrease-qty')) {
+          const itemId = e.target.closest('.decrease-qty').getAttribute('data-id');
+          const item = cart.find(item => item.id === itemId);
+          if (item && item.quantity > 1) {
+            item.quantity -= 1;
+            saveCartToStorage();
+            updateCartDisplay();
+          }
+        }
+      });
+      
+      // Update quantity when input changes
+      document.addEventListener('change', (e) => {
+        if (e.target.classList.contains('item-qty')) {
+          const itemId = e.target.getAttribute('data-id');
+          const newQuantity = parseInt(e.target.value);
+          const item = cart.find(item => item.id === itemId);
+          
+          if (item && newQuantity > 0) {
+            item.quantity = newQuantity;
+            saveCartToStorage();
+            updateCartDisplay();
+          } else if (item && newQuantity <= 0) {
+            cart = cart.filter(item => item.id !== itemId);
+            saveCartToStorage();
+            updateCartDisplay();
+          }
+        }
+      });
+      
+      // Update order summary
+      function updateOrderSummary() {
+        const orderSummary = document.getElementById('orderSummary');
+        const orderSubtotal = document.getElementById('orderSubtotal');
+        const orderShipping = document.getElementById('orderShipping');
+        const orderTotal = document.getElementById('orderTotal');
+        
+        orderSummary.innerHTML = '';
+        
+        if (cart.length === 0) {
+          orderSummary.innerHTML = `
+            <div class="empty-cart text-center py-4">
+              <i class="fas fa-shopping-cart fa-2x text-muted mb-3"></i>
+              <p class="text-muted">Your cart is empty</p>
+            </div>
+          `;
+        } else {
+          cart.forEach(item => {
+            const itemTotal = item.price * item.quantity;
+            const cartItemElement = document.createElement('div');
+            cartItemElement.className = 'cart-item mb-3 pb-3 border-bottom';
+            cartItemElement.innerHTML = `
+              <div class="d-flex align-items-center">
+                <img src="${item.image}" class="product-img me-3" alt="${item.name}">
+                <div class="flex-grow-1">
+                  <h6 class="mb-1">${item.name}</h6>
+                  <p class="text-muted mb-1">Qty: ${item.quantity}</p>
+                  <strong>$${itemTotal.toFixed(2)}</strong>
+                </div>
+              </div>
+            `;
+            orderSummary.appendChild(cartItemElement);
+          });
+        }
+        
+        let subtotal = 0;
+        cart.forEach(item => {
+          subtotal += item.price * item.quantity;
+        });
+        
+        const shipping = subtotal > 0 ? 15.00 : 0;
+        const total = subtotal + shipping;
+        
+        orderSubtotal.textContent = `$${subtotal.toFixed(2)}`;
+        orderShipping.textContent = `$${shipping.toFixed(2)}`;
+        orderTotal.textContent = `$${total.toFixed(2)}`;
+      }
+      
+      // Initialize cart display on page load
+      updateCartDisplay();
+      
+      // --- FORM VALIDATION ---
+      const checkoutForm = document.getElementById('checkoutForm');
+      const submitBtn = document.getElementById('submitBtn');
+      const orderSuccessAlert = document.getElementById('orderSuccessAlert');
+      const alertOverlay = document.getElementById('alertOverlay');
+      const closeAlert = document.getElementById('closeAlert');
+      const addressInput = document.getElementById('address');
+      const addressSuggestions = document.getElementById('addressSuggestions');
+      
+      // Name validation - only alphabetic characters and spaces
+      function validateName(name) {
+        const nameRegex = /^[A-Za-z\s]+$/;
+        return nameRegex.test(name);
+      }
+      
+      // Phone validation - Pakistani phone number format
+      function validatePhone(phone) {
+        const phoneRegex = /^03\d{2}-\d{7}$/;
+        return phoneRegex.test(phone);
+      }
+      
+      // Email validation
+      function validateEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+      }
+      
+      // Simple address validation - just check if it's not empty and has reasonable length
+      function validateAddress(address) {
+        const trimmedAddress = address.trim();
+        return trimmedAddress.length >= 10;
+      }
+      
+      // Show address suggestions
+      function showAddressSuggestions() {
+        addressSuggestions.style.display = 'block';
+      }
+      
+      // Hide address suggestions
+      function hideAddressSuggestions() {
+        setTimeout(() => {
+          addressSuggestions.style.display = 'none';
+        }, 200);
+      }
+      
+      // Fill address with selected suggestion
+      function fillAddress(address) {
+        addressInput.value = address.replace(/&#10;/g, '\n');
+        addressInput.classList.remove('is-invalid');
+        addressInput.classList.add('is-valid');
+        hideAddressSuggestions();
+      }
+      
+      // Address input events
+      addressInput.addEventListener('focus', showAddressSuggestions);
+      addressInput.addEventListener('blur', hideAddressSuggestions);
+      
+      // Address suggestion click events
+      document.querySelectorAll('.address-suggestion').forEach(suggestion => {
+        suggestion.addEventListener('click', function() {
+          const address = this.getAttribute('data-address');
+          fillAddress(address);
+        });
+      });
+      
+      // Real-time validation
+      const fullNameInput = document.getElementById('fullName');
+      const phoneInput = document.getElementById('phoneNumber');
+      const emailInput = document.getElementById('email');
+      
+      // Name validation on input
+      fullNameInput.addEventListener('input', function() {
+        if (this.value.trim() === '') {
+          this.classList.remove('is-valid', 'is-invalid');
+        } else if (validateName(this.value)) {
+          this.classList.remove('is-invalid');
+          this.classList.add('is-valid');
+        } else {
+          this.classList.remove('is-valid');
+          this.classList.add('is-invalid');
+        }
+      });
+      
+      // Phone validation on input
+      phoneInput.addEventListener('input', function() {
+        if (this.value.trim() === '') {
+          this.classList.remove('is-valid', 'is-invalid');
+        } else if (validatePhone(this.value)) {
+          this.classList.remove('is-invalid');
+          this.classList.add('is-valid');
+        } else {
+          this.classList.remove('is-valid');
+          this.classList.add('is-invalid');
+        }
+      });
+      
+      // Email validation on input
+      emailInput.addEventListener('input', function() {
+        if (this.value.trim() === '') {
+          this.classList.remove('is-valid', 'is-invalid');
+        } else if (validateEmail(this.value)) {
+          this.classList.remove('is-invalid');
+          this.classList.add('is-valid');
+        } else {
+          this.classList.remove('is-valid');
+          this.classList.add('is-invalid');
+        }
+      });
+      
+      // Address validation on input
+      addressInput.addEventListener('input', function() {
+        if (this.value.trim() === '') {
+          this.classList.remove('is-valid', 'is-invalid');
+        } else if (validateAddress(this.value)) {
+          this.classList.remove('is-invalid');
+          this.classList.add('is-valid');
+        } else {
+          this.classList.remove('is-valid');
+          this.classList.add('is-invalid');
+        }
+      });
+      
+      // Show success alert
+      function showSuccessAlert() {
+        orderSuccessAlert.style.display = 'block';
+        alertOverlay.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+      }
+      
+      // Hide success alert
+      function hideSuccessAlert() {
+        orderSuccessAlert.style.display = 'none';
+        alertOverlay.style.display = 'none';
+        document.body.style.overflow = 'auto';
+      }
+      
+      // Close alert button
+      closeAlert.addEventListener('click', function() {
+        hideSuccessAlert();
+        // Clear cart after successful order
+        cart = [];
+        localStorage.setItem('cart', JSON.stringify(cart));
+        updateCartDisplay();
+        // Redirect to home page
+        window.location.href = 'index.html';
+      });
+      
+      // Overlay click to close alert
+      alertOverlay.addEventListener('click', hideSuccessAlert);
+      
+      // Form submission
+      checkoutForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Check if cart is empty
+        if (cart.length === 0) {
+          alert('Your cart is empty. Please add items to your cart before placing an order.');
+          return;
+        }
+        
+        // Validate all fields
+        const fullName = fullNameInput.value.trim();
+        const phone = phoneInput.value.trim();
+        const email = emailInput.value.trim();
+        const address = addressInput.value.trim();
+        
+        let isValid = true;
+        
+        // Validate name
+        if (!validateName(fullName)) {
+          fullNameInput.classList.add('is-invalid');
+          isValid = false;
+        }
+        
+        // Validate phone
+        if (!validatePhone(phone)) {
+          phoneInput.classList.add('is-invalid');
+          isValid = false;
+        }
+        
+        // Validate email
+        if (!validateEmail(email)) {
+          emailInput.classList.add('is-invalid');
+          isValid = false;
+        }
+        
+        // Validate address
+        if (!validateAddress(address)) {
+          addressInput.classList.add('is-invalid');
+          isValid = false;
+        }
+        
+        if (!isValid) {
+          // Scroll to first error
+          const firstError = document.querySelector('.is-invalid');
+          if (firstError) {
+            firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+          return;
+        }
+        
+        // Show loading state
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Processing...';
+        
+        // Simulate processing delay
+        setTimeout(function() {
+          // Show success alert
+          showSuccessAlert();
+          
+          // Reset form
+          checkoutForm.reset();
+          
+          // Remove validation classes
+          fullNameInput.classList.remove('is-valid', 'is-invalid');
+          phoneInput.classList.remove('is-valid', 'is-invalid');
+          emailInput.classList.remove('is-valid', 'is-invalid');
+          addressInput.classList.remove('is-valid', 'is-invalid');
+          
+          // Reset button state
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Place Order';
+          
+        }, 1000);
+      });
+    });
+  </script>
+</body>
+</html>

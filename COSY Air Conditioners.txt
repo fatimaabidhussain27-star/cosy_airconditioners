@@ -1,0 +1,26 @@
+User-agent: *
+Allow: /
+Allow: /index.html
+Allow: /Products.html
+Allow: /Brand.html
+Allow: /About.html
+Allow: /Compare.html
+Allow: /Contact.html
+Allow: /login.html
+Allow: /signup.html
+Allow: /Chackout.html
+Allow: /Hair.html
+Allow: /Gree.html
+Allow: /Orient.html
+Allow: /Kenwood.html
+Allow: /Dawlance.html
+Allow: /HH1.html
+Allow: /GG5.html
+Allow: /OO3.html
+
+Disallow: /admin/
+Disallow: /private/
+Disallow: /tmp/
+Disallow: /cgi-bin/
+
+Sitemap: https://www.cosy.com/sitemap.xml
